@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
 import { CrearRegistroVotacion } from "./Pages/RegistroVotacion/Crear";
+import { AllRegistroVotacion } from "./Pages/RegistroVotacion/Index";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RenderApp />}>
-          <Route path="registro-votacion" element={<CrearRegistroVotacion />}>
+          <Route path="registro-votacion" element={<AllRegistroVotacion />}>
             <Route path="crear" element={<CrearRegistroVotacion />} />
             <Route path="actualizar" element={<Default />} />
             <Route path="eliminar" element={<Default />} />
@@ -36,11 +37,12 @@ function RenderApp() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
   const navItems = [
-    { name: 'Inicio', path: '/inicio', icon: 'pi pi-home' },
-    { name: 'Registros', path: '/registro-votacion', icon: 'pi pi-calendar-plus' },
-    { name: 'Lideres', path: '/lideres', icon: 'pi pi-users' },
-    { name: 'Migración', path: '/migracion', icon: 'pi pi-upload' },
-    { name: 'Login', path: '/login', icon: 'pi pi-sign-in' },
+    { name: 'Inicio', path: 'inicio', icon: 'pi pi-home' },
+    { name: 'Registros', path: 'registro-votacion', icon: 'pi pi-calendar-plus' },
+    { name: 'Crear', path: 'registro-votacion/crear', icon: 'pi pi-calendar-plus' },
+    { name: 'Lideres', path: 'lideres', icon: 'pi pi-users' },
+    { name: 'Migración', path: 'migracion', icon: 'pi pi-upload' },
+    { name: 'Login', path: 'login', icon: 'pi pi-sign-in' },
   ];
 
   // Función para manejar la navegación desde el menú móvil
