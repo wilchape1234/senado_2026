@@ -12,17 +12,14 @@ export interface Departamento {
 
 /* 
 
-id	integer($int32)
-name	string
-nullable: true
-description	string
-nullable: true
-cityCapitalId	integer($int32)
-nullable: true
-municipalities	integer($int32)
-nullable: true
-surface	number($float)
-population	number($float)
-nullable: true
-phonePrefix	string
+    id	integer($int32)
+    name	string
+    nullable: true
+    description	string
+    cityCapitalId	integer($int32)
+    nullable: true
+    municipalities	integer($int32)
+    surface	number($float)
+    population	number($float)
+    phonePrefix	string
 */
