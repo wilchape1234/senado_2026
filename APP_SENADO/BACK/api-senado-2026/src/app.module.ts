@@ -6,6 +6,8 @@ import { LiderModule } from './lider/lider.module';
 import { RegistroVotacion } from './registro_votacion/entities/registro_votacion.entity';
 import { Lider } from './lider/entities/lider.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CiudadesModule } from './ciudades/ciudades.module';
+import { DepartamentosModule } from './departamentos/departamentos.module';
 
 let modeDev2 = true;
 
@@ -21,7 +23,7 @@ const enties = [RegistroVotacion, Lider];
     database: 'bd_senado_2026',
     entities: enties,
     synchronize: true,
-  }), RegistroVotacionModule, LiderModule],
+  }), RegistroVotacionModule, LiderModule, CiudadesModule, DepartamentosModule],
   controllers: [AppController],
   providers: [AppService],
 })
