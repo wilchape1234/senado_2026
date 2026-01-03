@@ -1,0 +1,136 @@
+{
+   "departamentos": [
+        {
+            "code": 5,
+            "departamento": "ANTIOQUIA"
+        },
+        {
+            "code": 8,
+            "departamento": "ATLÁNTICO"
+        },
+        {
+            "code": 11,
+            "departamento": "BOGOTÁ, D.C."
+        },
+        {
+            "code": 13,
+            "departamento": "BOLÍVAR"
+        },
+        {
+            "code": 15,
+            "departamento": "BOYACÁ"
+        },
+        {
+            "code": 17,
+            "departamento": "CALDAS"
+        },
+        {
+            "code": 18,
+            "departamento": "CAQUETÁ"
+        },
+        {
+            "code": 19,
+            "departamento": "CAUCA"
+        },
+        {
+            "code": 20,
+            "departamento": "CESAR"
+        },
+        {
+            "code": 23,
+            "departamento": "CÓRDOBA"
+        },
+        {
+            "code": 25,
+            "departamento": "CUNDINAMARCA"
+        },
+        {
+            "code": 27,
+            "departamento": "CHOCÓ"
+        },
+        {
+            "code": 41,
+            "departamento": "HUILA"
+        },
+        {
+            "code": 44,
+            "departamento": "LA GUAJIRA"
+        },
+        {
+            "code": 47,
+            "departamento": "MAGDALENA"
+        },
+        {
+            "code": 50,
+            "departamento": "META"
+        },
+        {
+            "code": 52,
+            "departamento": "NARIÑO"
+        },
+        {
+            "code": 54,
+            "departamento": "NORTE DE SANTANDER"
+        },
+        {
+            "code": 63,
+            "departamento": "QUINDÍO"
+        },
+        {
+            "code": 66,
+            "departamento": "RISARALDA"
+        },
+        {
+            "code": 68,
+            "departamento": "SANTANDER"
+        },
+        {
+            "code": 70,
+            "departamento": "SUCRE"
+        },
+        {
+            "code": 73,
+            "departamento": "TOLIMA"
+        },
+        {
+            "code": 76,
+            "departamento": "VALLE DEL CAUCA"
+        },
+        {
+            "code": 81,
+            "departamento": "ARAUCA"
+        },
+        {
+            "code": 85,
+            "departamento": "CASANARE"
+        },
+        {
+            "code": 86,
+            "departamento": "PUTUMAYO"
+        },
+        {
+            "code": 88,
+            "departamento": "ARCHIPIÉLAGO DE SAN ANDRÉS, PROVIDENCIA Y SANTA CATALINA"
+        },
+        {
+            "code": 91,
+            "departamento": "AMAZONAS"
+        },
+        {
+            "code": 94,
+            "departamento": "GUAINÍA"
+        },
+        {
+            "code": 95,
+            "departamento": "GUAVIARE"
+        },
+        {
+            "code": 97,
+            "departamento": "VAUPÉS"
+        },
+        {
+            "code": 99,
+            "departamento": "VICHADA"
+        }
+    ]
+}
