@@ -194,7 +194,7 @@ function CrearRegistroVotacion() {
                     </div>
 
                 </div>
-                <div className="card-body">
+                <div className="card-body" style={{backgroundColor:'rgba(255, 102, 0, 0.15)'}}>
                     <form className="row g-3">
 
                         {/* Cédula */}
@@ -347,11 +347,20 @@ function CrearRegistroVotacion() {
                         </div>
 
                         {/* Cédula Líder */}
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                             <label className="form-label">Cedula Líder al que representa</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='liderCedula' />
+                            {validationErrors.liderCedula && (
+                                <div className="text-danger small mt-1">{validationErrors.liderCedula}</div>
+                            )}
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label" htmlFor="liderCedula">Líder al que representa</label>
+                            <input
+                                // onChange={handleChangeInputValue}
+                                type="text" className="form-control" name='liderCedula' id="liderCedula"/>
                             {validationErrors.liderCedula && (
                                 <div className="text-danger small mt-1">{validationErrors.liderCedula}</div>
                             )}
