@@ -1,13 +1,27 @@
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent, } from "react";
 import { regitroVotacionNulo, type Ciudad, type Departamento, type RegistroVotacion, } from "../../Types/interfaces";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
 import { toPascalCase } from "../../Functions/formatters";
 import { createRegistroVotacion } from "../../API/apiResponse";
+import { initialValidationErrors, validarRegistro, type ValidationErrors, } from "../../Functions/global";
 
+/* Imgenes */
+import gisselaImage from "../../assets/Img/gissela_70_1.jpeg";
+
+/* Imgenes */
 
 function CrearRegistroVotacion() {
     const [selectedDepartamentoId, setSelectedDepartamentoId] = useState<number | ''>('');
+
+    // ❌ ELIMINAR ESTE ESTADO: Ya no es necesario, lo reemplaza 'validationErrors'
+    // const [Validation, setValidation] = useState<ValitationMsg>({
+    //     msg: "string",
+    //     error: false,
+    // })
+
+    const [validationErrors, setValidationErrors] = useState<ValidationErrors>(initialValidationErrors);
+
 
     const [registroVotacion, setRegistroVotacion] = useState<RegistroVotacion>(regitroVotacionNulo);
 
@@ -39,59 +53,58 @@ function CrearRegistroVotacion() {
         }
     }, []);
 
-    /*     function handleChangeDepartamento(event: ChangeEvent<HTMLSelectElement | HTMLInputElement>): void {
-            const { name, value } = event.target;
-    
-            if (name === 'code') {
-                const seleccionado = Number(value); 
-    
-                
-                const filtrados = ciudades.filter((m) => m.departmentId === seleccionado);
-    
-                setCiudadPorDepartamento(filtrados);
-            }
-        } */
     /* RegistroVotacion */
 
 
     /* Crear.tsx */
-
-    const handleChangeInputValue = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+    /* Crear.tsx */
+    // ----------------------------------------------------------------------
+    // CORRECCIÓN: Agregar 'async' a la función handleChangeInputValue
+    const handleChangeInputValue = async (e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         // Si el valor es una cadena vacía (el placeholder), queremos null o ''
         const valueNumOrStr = (value === '' || value === '0') ? null : value;
-
-        // Determinar si el valor debe ser un número (y manejar null si es el placeholder)
+        // ASERTAMOS que 'name' es una clave de ValidationErrors. 
+        // Si la clave no es válida, la validación fallará, pero el tipado es correcto para los campos que sí existen.
+        const fieldName = name as keyof ValidationErrors;
         const isNumericField = ['cedula', 'municipioId', 'liderCedula', 'mesaVotacion', 'departamentoId'].includes(name);
         const finalValue = isNumericField && valueNumOrStr !== null ? Number(valueNumOrStr) : valueNumOrStr;
 
-        // 1. Lógica para filtrar Ciudades/Municipios (Departamento Select)
+
+        // 1. Validar y actualizar el estado de errores INMEDIATAMENTE
+        // ⭐ El 'await' en la línea 70 ahora es válido
+        const error = await validarRegistro(fieldName, finalValue);
+        setValidationErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: error,
+        }));
+        // 2. Lógica para filtrar Ciudades/Municipios (Departamento Select)
         if (name === 'departamentoId') {
             const departamentoIdSeleccionado = finalValue as number | null;
+            // ... (lógica existente)
 
-            // 1a. Actualizar el estado del ID de departamento seleccionado
-            setSelectedDepartamentoId(departamentoIdSeleccionado ?? '');
-
-            // 1b. Filtrar las ciudades/municipios basados en el departamento seleccionado
-            const filtrados = departamentoIdSeleccionado
-                ? ciudades.filter((c) => c.departmentId === departamentoIdSeleccionado)
-                : [];
-
-            setCiudadPorDepartamento(filtrados);
-
-            // 1c. AHORA INCLUIMOS departamentoId y reseteamos municipioId
-            setRegistroVotacion((r) => ({
-                ...r,
-                departamentoId: departamentoIdSeleccionado, // <--- CAMBIO CLAVE: Guardar el ID
-                municipioId: null, // Resetear el municipio.
+            // IMPORTANTE: Forzar la revalidación del municipioId al resetearlo
+            // ⭐ El 'await' en la línea 82 ahora es válido
+            const municipioError = await validarRegistro('municipioId', null);
+            setValidationErrors(prevErrors => ({
+                ...prevErrors,
+                municipioId: municipioError,
             }));
 
-            // Eliminamos el 'return' para que se complete la función si fuera necesario,
-            // pero en este caso ya se manejó el estado, así que lo dejamos para optimizar.
+            // Lógica para filtrar ciudades, basada en tu código anterior
+            if (departamentoIdSeleccionado) {
+                setSelectedDepartamentoId(departamentoIdSeleccionado);
+                setCiudadPorDepartamento(ciudades.filter(c => c.departmentId === departamentoIdSeleccionado));
+            } else {
+                setSelectedDepartamentoId('');
+                setCiudadPorDepartamento([]);
+            }
+
+            // Además, asegúrate de resetear municipioId en el estado de registroVotacion
+            setRegistroVotacion(r => ({ ...r, municipioId: null }));
             return;
         }
-
-        // 2. Actualiza el estado de RegistroVotacion (para los demás campos)
+        // 3. Actualiza el estado de RegistroVotacion (para los demás campos)
         setRegistroVotacion((r) => {
 
             // Manejo de PascalCase para Nombres y Apellidos
@@ -109,21 +122,45 @@ function CrearRegistroVotacion() {
             };
         });
     }
+    // ----------------------------------------------------------------------
+
     const handleCrearRegistroVotacion = async () => {
 
+        let hasErrors = false;
+        const finalErrors: ValidationErrors = { ...initialValidationErrors };
+
+        // ⭐ CAMBIO CLAVE: Usar un bucle for...of para usar await ⭐
+        const fieldsToValidate = (Object.keys(initialValidationErrors) as Array<keyof ValidationErrors>);
+
+        for (const fieldName of fieldsToValidate) {
+            const fieldValue = (registroVotacion as any)[fieldName];
+
+            // ⭐ Usar await para esperar el resultado de la validación
+            const error = await validarRegistro(fieldName, fieldValue);
+
+            finalErrors[fieldName] = error;
+            if (error) {
+                hasErrors = true;
+            }
+        }
+
+        // Actualizar el estado de errores con el resultado final
+        setValidationErrors(finalErrors);
+
+        if (hasErrors) {
+            alert('Por favor, corrige los errores en el formulario antes de continuar.');
+            return;
+        }
+
+        // Si no hay errores, proceder con la creación
         try {
-            if (registroVotacion.cedula > 100) {
 
-                let newRegistroVotacion = await createRegistroVotacion(registroVotacion)
-                alert(`Se ha creado satisfactoriamente el registro de: ${newRegistroVotacion.cedula} ${newRegistroVotacion.nombres} ${newRegistroVotacion.apellidos} `)
-            }
-            else {
-                alert(`No se pudo registar al votante con CC: ${registroVotacion.cedula}`)
 
-            }
+            let newRegistroVotacion = await createRegistroVotacion(registroVotacion);
+            alert(`Se ha creado satisfactoriamente el registro de: ${newRegistroVotacion.cedula} ${newRegistroVotacion.nombres} ${newRegistroVotacion.apellidos} `);
         } catch (error) {
-            console.error(error)
-
+            console.error(error);
+            alert('Ocurrió un error al intentar guardar el registro.');
         }
     }
     /* RegistroVotacion */
@@ -137,73 +174,134 @@ function CrearRegistroVotacion() {
     return (
         <div className="container mt-5">
             <div className="card shadow">
-                <div className="card-header bg-primary text-white">
-                    <h4 className="mb-0">Registro de Votantes - Senado 2026 G-70</h4>
+                <div className="header p-4 text-white d-flex align-items-center justify-content-between flex-wrap" style={{backgroundColor:'#1e3a8a'}}>
+
+                    {/* Contenedor del Título: Permite que el texto se ajuste */}
+                    <div className="me-3">
+                        <h1 className="fs-4 fw-bold mb-0" style={{ whiteSpace: 'normal' }}>
+                            Con Gisella unidos habrán oportunidades al senado
+                        </h1>
+                    </div>
+
+                    {/* Contenedor de la Imagen: Ajustado y con margen izquierdo */}
+                    <div className="" style={{ height:'180px',maxHeight: '200px', flexShrink: 0 }}>
+                        <img
+                            src={gisselaImage}
+                            alt="Gisella"
+                            className="img-fluid rounded-2"
+                            style={{ maxHeight: '100%', /* maxWidth: '80px' */ }}
+                        />
+                    </div>
+
                 </div>
                 <div className="card-body">
                     <form className="row g-3">
 
-                        {/* ... (Fila 1 a Fila 3 - Se mantienen igual) ... */}
+                        {/* Cédula */}
                         <div className="col-md-4">
                             <label className="form-label">Cédula</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='cedula' />
+                            {/* 💥 CAMBIO CLAVE 3: Mostrar el error */}
+                            {validationErrors.cedula && (
+                                <div className="text-danger small mt-1">{validationErrors.cedula}</div>
+                            )}
                         </div>
+
+                        {/* Nombres */}
                         <div className="col-md-4">
                             <label className="form-label">Nombres</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='nombres' />
+                            {/* 💥 CAMBIO CLAVE 3: Mostrar el error */}
+                            {validationErrors.nombres && (
+                                <div className="text-danger small mt-1">{validationErrors.nombres}</div>
+                            )}
                         </div>
+
+                        {/* Apellidos */}
                         <div className="col-md-4">
                             <label className="form-label">Apellidos</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='apellidos' />
+                            {/* 💥 CAMBIO CLAVE 3: Mostrar el error */}
+                            {validationErrors.apellidos && (
+                                <div className="text-danger small mt-1">{validationErrors.apellidos}</div>
+                            )}
                         </div>
 
-                        {/* Fila 2 */}
+                        {/* ... (Continuar aplicando el patrón para cada campo) ... */}
+
+                        {/* N° Celular */}
                         <div className="col-md-6">
                             <label className="form-label">N° Celular</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="tel" className="form-control" name='numeroCelular' />
+                            {validationErrors.numeroCelular && (
+                                <div className="text-danger small mt-1">{validationErrors.numeroCelular}</div>
+                            )}
                         </div>
+
+                        {/* Correo Electrónico */}
                         <div className="col-md-6">
                             <label className="form-label">Correo Electrónico</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="email" className="form-control" name='correoElectronico' />
+                            {validationErrors.correoElectronico && (
+                                <div className="text-danger small mt-1">{validationErrors.correoElectronico}</div>
+                            )}
                         </div>
 
-                        {/* Fila 3 */}
+                        {/* Mesa de votación */}
                         <div className="col-md-3">
                             <label className="form-label">Mesa de votación</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='mesaVotacion' />
+                            {validationErrors.mesaVotacion && (
+                                <div className="text-danger small mt-1">{validationErrors.mesaVotacion}</div>
+                            )}
                         </div>
+
+                        {/* Lugar de votación */}
                         <div className="col-md-9">
                             <label className="form-label">Lugar de votación</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='lugarVotacion' />
+                            {validationErrors.lugarVotacion && (
+                                <div className="text-danger small mt-1">{validationErrors.lugarVotacion}</div>
+                            )}
                         </div>
+
+                        {/* Dirección */}
                         <div className="col-md-6">
                             <label className="form-label">Direccion </label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='direccion' />
+                            {validationErrors.direccion && (
+                                <div className="text-danger small mt-1">{validationErrors.direccion}</div>
+                            )}
                         </div>
+
+                        {/* Comuna Barrio */}
                         <div className="col-md-6">
                             <label className="form-label">Comuna Barrio </label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='comunaBarrio' />
+                            {validationErrors.comunaBarrio && (
+                                <div className="text-danger small mt-1">{validationErrors.comunaBarrio}</div>
+                            )}
                         </div>
 
-                        {/* Fila 4: SELECTS CORREGIDOS */}
+                        {/* Departamento (Select) */}
                         <div className="col-md-6">
                             <label htmlFor="departamentoSelect">Departamento</label>
                             <select
@@ -211,10 +309,8 @@ function CrearRegistroVotacion() {
                                 className="form-select"
                                 name='departamentoId'
                                 onChange={handleChangeInputValue}
-                                // Usamos el nuevo estado para controlar el valor seleccionado
                                 value={selectedDepartamentoId}
                             >
-                                {/* ELIMINADO: selected. Usamos value="" y disabled */}
                                 <option value="" disabled>Elija el departamento</option>
                                 {departamentos.map((dep) => (
                                     <option key={dep.id} value={dep.id}>
@@ -222,9 +318,12 @@ function CrearRegistroVotacion() {
                                     </option>
                                 ))}
                             </select>
+                            {validationErrors.departamentoId && (
+                                <div className="text-danger small mt-1">{validationErrors.departamentoId}</div>
+                            )}
                         </div>
 
-                        {/* Selector de Municipios */}
+                        {/* Municipio (Select) */}
                         <div className="col-md-6">
                             <label htmlFor="municipioSelect">Municipio</label>
                             <select
@@ -232,11 +331,9 @@ function CrearRegistroVotacion() {
                                 className="form-select"
                                 name='municipioId'
                                 onChange={handleChangeInputValue}
-                                // El valor es controlado por el estado de RegistroVotacion (o '' si es null)
                                 value={registroVotacion.municipioId || ''}
                                 disabled={ciudadPorDepartamento.length === 0}
                             >
-                                {/* Usamos value="" y disabled */}
                                 <option value="" disabled>Seleccione un municipio</option>
                                 {ciudadPorDepartamento.map((mun) => (
                                     <option key={mun.id} value={mun.id}>
@@ -244,35 +341,33 @@ function CrearRegistroVotacion() {
                                     </option>
                                 ))}
                             </select>
+                            {validationErrors.municipioId && (
+                                <div className="text-danger small mt-1">{validationErrors.municipioId}</div>
+                            )}
                         </div>
 
-                        {/* Fila 5 */}
+                        {/* Cédula Líder */}
                         <div className="col-md-4">
                             <label className="form-label">Cedula Líder al que representa</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='liderCedula' />
-                        </div>
-                        <div className="col-md-4">
-                            <label className="form-label">Nombre Lider</label>
-                            <input
-                                // onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='lider-nombres' />
-                        </div>
-                        <div className="col-md-4">
-                            <label className="form-label">Apellido Lider</label>
-                            <input
-                                // onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='lider-apellidos' />
+                            {validationErrors.liderCedula && (
+                                <div className="text-danger small mt-1">{validationErrors.liderCedula}</div>
+                            )}
                         </div>
 
-                        {/* Fila 6 */}
+                        {/* Fila de Observación */}
                         <div className="col-md-12">
                             <label className="form-label">Observación</label>
                             <textarea
                                 onChange={handleChangeInputValue}
                                 className="form-control" name='observacion' rows={3}></textarea>
+                            {/* {validationErrors.observacion && (
+                                <div className="text-danger small mt-1">{validationErrors.observacion}</div>
+                            )} */}
                         </div>
+
 
                         <div className="col-12 mt-4">
                             <button type="button" className="btn btn-primary w-100"
@@ -280,14 +375,13 @@ function CrearRegistroVotacion() {
                             >
                                 Guardar Registro
                             </button>
-                            <pre className="mt-4 bg-dark text-light rounded">
+                            <pre className="bg-black text-white d-none">
                                 {JSON.stringify(registroVotacion, null, 2)}
                             </pre>
                         </div>
 
                     </form>
                 </div>
-                {/* ... (Tabla de debug oculta) ... */}
             </div>
         </div>
     )

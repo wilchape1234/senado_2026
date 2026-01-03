@@ -12,6 +12,7 @@ import { fetchRegistroVotacionPaginated, getAllCiudades, getAllDepartamentos } f
 function AllRegistroVotacion() {
     // El estado ahora usa el tipo enriquecido
     const [data, setData] = useState<RegistroVotacion[]>([])
+
     const [dataCiudades, setDataCiudades] = useState<Ciudad[]>([])
     const [dataDepartamentos, setDataDepartamentos] = useState<Departamento[]>([])
     const [isLoading, setIsLoading] = useState(true);
@@ -52,7 +53,7 @@ function AllRegistroVotacion() {
     const getNameDep = (idMunicipio: number, data: Ciudad[]) => {
 
         let mun = data.find(f => f.id == idMunicipio)
-        let dep = dataDepartamentos.find(d=>d.id==mun?.departmentId)
+        let dep = dataDepartamentos.find(d => d.id == mun?.departmentId)
         return (dep?.name || "N/A")
     }
 
@@ -62,9 +63,9 @@ function AllRegistroVotacion() {
 
     // **Renderizado del Componente**
     return (<>
-        <div className="container-table">
-            <table className="table">
-                <thead>
+        <div className="container-table m-5">
+            <table className="table table-bordered rounded-2">
+                <thead className="">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Cédula</th>
@@ -74,7 +75,7 @@ function AllRegistroVotacion() {
                         <th scope="col">Departamento</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="">
                     {data.length > 0 ? (
                         data.map((r, index) => {
 
@@ -104,7 +105,7 @@ function AllRegistroVotacion() {
                 </tbody>
             </table>
         </div>
-        
+
     </>)
 }
 
