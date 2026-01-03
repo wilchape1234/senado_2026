@@ -59,18 +59,18 @@ export interface RegistroVotacion {
 }
 export const regitroVotacionNulo: RegistroVotacion = {
   cedula: 0,
-  nombres: 'null',
-  apellidos: 'null',
-  correoElectronico: 'null',
-  numeroCelular: 'null',
+  nombres: '',
+  apellidos: '',
+  correoElectronico: '',
+  numeroCelular: '',
   mesaVotacion: 0,
-  lugarVotacion: 'null',
+  lugarVotacion: '',
   municipioId: 0,
-  direccion: 'null',
-  comunaBarrio: 'null',
+  direccion: '',
+  comunaBarrio: '',
   liderCedula: 0,
   fechaRegistro: hoyFecha,
-  observacion: 'null',
+  observacion: '',
 }
 
 export interface Lider {
@@ -85,11 +85,11 @@ export interface Lider {
 }
 export const liderNulo: Lider = {
   cedula: 0,
-  nombres: 'null',
-  apellidos: 'null',
-  numeroCelular: 'null',
+  nombres: '',
+  apellidos: '',
+  numeroCelular: '',
   municipioId: 0,
-  direccion: 'null',
+  direccion: '',
   mesaVotacion: 0,
-  lugarVotacion: 'null',
+  lugarVotacion: '',
 }
