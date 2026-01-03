@@ -19,7 +19,7 @@ function CrearRegistroVotacion() {
     //     msg: "string",
     //     error: false,
     // })
-
+    const hostname = window.location.hostname
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>(initialValidationErrors);
 
 
@@ -37,8 +37,8 @@ function CrearRegistroVotacion() {
                 try {
                     // Asumiendo que los archivos están en la carpeta /public
                     // const resDeps = await fetch('/departamentos.json');
-                    const responseDep: AxiosResponse<Departamento[]> = await axios.get(`http://192.168.18.18:3000/api/v1/departamentos`);
-                    const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://192.168.18.18:3000/api/v1/ciudades`);
+                    const responseDep: AxiosResponse<Departamento[]> = await axios.get(`http://${hostname}:3000/api/v1/departamentos`);
+                    const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://${hostname}:3000/api/v1/ciudades`);
 
                     setDepartamentos(responseDep.data);
                     setCiudades(responseCiu.data);

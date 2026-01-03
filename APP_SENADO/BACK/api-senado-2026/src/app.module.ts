@@ -10,6 +10,7 @@ import { CiudadesModule } from './ciudades/ciudades.module';
 import { DepartamentosModule } from './departamentos/departamentos.module';
 
 let modeDev2 = true;
+let db_dev = true;
 
 const enties = [RegistroVotacion, Lider];
 
@@ -20,7 +21,7 @@ const enties = [RegistroVotacion, Lider];
     port: modeDev2 ? 3306 : 3307,
     username: 'root',
     password: modeDev2 ? '' : 'root',
-    database: 'bd_senado_2026',
+    database: db_dev ? 'bd_senado_2026_dev' : 'bd_senado_2026',
     entities: enties,
     synchronize: true,
   }), RegistroVotacionModule, LiderModule, CiudadesModule, DepartamentosModule],

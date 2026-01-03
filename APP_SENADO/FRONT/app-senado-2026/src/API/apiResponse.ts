@@ -220,7 +220,7 @@ function handleAxiosError(error: unknown, context: string): never {
 /* Ciudades */
 export async function getAllCiudades(): Promise<Ciudad[]> {
     try {
-        const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://192.168.18.18:3000/api/v1/ciudades`);
+        const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://${BASE_URL_SERVER_API}:3000/api/v1/ciudades`);
         return responseCiu.data;
     } catch (error) {
         console.error("Error al obtener ciudades:", error);
@@ -233,7 +233,7 @@ export async function getAllCiudades(): Promise<Ciudad[]> {
 /* Departamentos */
 export async function getAllDepartamentos(): Promise<Departamento[]> {
     try {
-        const responseCiu: AxiosResponse<Departamento[]> = await axios.get(`http://192.168.18.18:3000/api/v1/departamentos`);
+        const responseCiu: AxiosResponse<Departamento[]> = await axios.get(`http://${BASE_URL_SERVER_API}:3000/api/v1/departamentos`);
         return responseCiu.data;
     } catch (error) {
         console.error("Error al obtener departamentos:", error);
