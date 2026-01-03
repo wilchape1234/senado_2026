@@ -162,6 +162,7 @@ function CrearRegistroVotacion() {
 
             let newRegistroVotacion = await createRegistroVotacion(registroVotacion);
             alert(`Se ha creado satisfactoriamente el registro de: ${newRegistroVotacion.cedula} ${newRegistroVotacion.nombres} ${newRegistroVotacion.apellidos} `);
+            setRegistroVotacion(regitroVotacionNulo)
         } catch (error) {
             console.error(error);
             alert('Ocurrió un error al intentar guardar el registro.');
