@@ -1,7 +1,7 @@
 /* GetData.ts */
 
 import axios, { type AxiosResponse } from 'axios';
-import type { Ciudad, RegistroVotacion } from '../Types/interfaces';
+import type { Ciudad, Departamento, RegistroVotacion } from '../Types/interfaces';
 
 // --- CONFIGURACIÓN ---
 export let dinamicHost = window.location.hostname;
@@ -229,3 +229,16 @@ export async function getAllCiudades(): Promise<Ciudad[]> {
 }
 
 /* Ciudades */
+
+/* Departamentos */
+export async function getAllDepartamentos(): Promise<Departamento[]> {
+    try {
+        const responseCiu: AxiosResponse<Departamento[]> = await axios.get(`http://192.168.18.18:3000/api/v1/departamentos`);
+        return responseCiu.data;
+    } catch (error) {
+        console.error("Error al obtener departamentos:", error);
+        return [];
+    }
+}
+
+/* Departamentos */

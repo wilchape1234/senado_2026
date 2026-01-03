@@ -7,8 +7,8 @@ import { createRegistroVotacion } from "../../API/apiResponse";
 
 
 function CrearRegistroVotacion() {
-const [selectedDepartamentoId, setSelectedDepartamentoId] = useState<number | ''>(''); 
-    
+    const [selectedDepartamentoId, setSelectedDepartamentoId] = useState<number | ''>('');
+
     const [registroVotacion, setRegistroVotacion] = useState<RegistroVotacion>(regitroVotacionNulo);
 
     const [ciudades, setCiudades] = useState<Ciudad[]>([]);
@@ -17,75 +17,83 @@ const [selectedDepartamentoId, setSelectedDepartamentoId] = useState<number | ''
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const cargarDatos = async () => {
-            try {
-                // Asumiendo que los archivos están en la carpeta /public
-                // const resDeps = await fetch('/departamentos.json');
-                const responseDep: AxiosResponse<Departamento[]> = await axios.get(`http://192.168.18.18:3000/api/v1/departamentos`);
-                const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://192.168.18.18:3000/api/v1/ciudades`);
+        if (!(departamentos.length > 0) && !(ciudadPorDepartamento.length > 0)) {
 
-                setDepartamentos(responseDep.data);
-                setCiudades(responseCiu.data);
-            } catch (error) {
-                console.error("Error cargando los archivos JSON", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+            const cargarDatos = async () => {
+                try {
+                    // Asumiendo que los archivos están en la carpeta /public
+                    // const resDeps = await fetch('/departamentos.json');
+                    const responseDep: AxiosResponse<Departamento[]> = await axios.get(`http://192.168.18.18:3000/api/v1/departamentos`);
+                    const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://192.168.18.18:3000/api/v1/ciudades`);
 
-        cargarDatos();
+                    setDepartamentos(responseDep.data);
+                    setCiudades(responseCiu.data);
+                } catch (error) {
+                    console.error("Error cargando los archivos JSON", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            cargarDatos();
+        }
     }, []);
 
-    function handleChangeDepartamento(event: ChangeEvent<HTMLSelectElement | HTMLInputElement>): void {
-        const { name, value } = event.target;
-
-        if (name === 'code') {
-            const seleccionado = Number(value); // Convertir a número
-
-            // Filtrar los municipios cuyo departmentId coincida con el code seleccionado
-            const filtrados = ciudades.filter((m) => m.departmentId === seleccionado);
-
-            setCiudadPorDepartamento(filtrados);
-        }
-    }
+    /*     function handleChangeDepartamento(event: ChangeEvent<HTMLSelectElement | HTMLInputElement>): void {
+            const { name, value } = event.target;
+    
+            if (name === 'code') {
+                const seleccionado = Number(value); 
+    
+                
+                const filtrados = ciudades.filter((m) => m.departmentId === seleccionado);
+    
+                setCiudadPorDepartamento(filtrados);
+            }
+        } */
     /* RegistroVotacion */
 
-   const handleChangeInputValue = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+
+    /* Crear.tsx */
+
+    const handleChangeInputValue = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         // Si el valor es una cadena vacía (el placeholder), queremos null o ''
         const valueNumOrStr = (value === '' || value === '0') ? null : value;
-        
+
         // Determinar si el valor debe ser un número (y manejar null si es el placeholder)
         const isNumericField = ['cedula', 'municipioId', 'liderCedula', 'mesaVotacion', 'departamentoId'].includes(name);
         const finalValue = isNumericField && valueNumOrStr !== null ? Number(valueNumOrStr) : valueNumOrStr;
-        
+
         // 1. Lógica para filtrar Ciudades/Municipios (Departamento Select)
         if (name === 'departamentoId') {
             const departamentoIdSeleccionado = finalValue as number | null;
-            
+
             // 1a. Actualizar el estado del ID de departamento seleccionado
             setSelectedDepartamentoId(departamentoIdSeleccionado ?? '');
-            
+
             // 1b. Filtrar las ciudades/municipios basados en el departamento seleccionado
-            const filtrados = departamentoIdSeleccionado 
+            const filtrados = departamentoIdSeleccionado
                 ? ciudades.filter((c) => c.departmentId === departamentoIdSeleccionado)
                 : [];
 
             setCiudadPorDepartamento(filtrados);
 
-            // 1c. RESETEAR municipioId en el estado de registroVotacion
+            // 1c. AHORA INCLUIMOS departamentoId y reseteamos municipioId
             setRegistroVotacion((r) => ({
                 ...r,
-                municipioId: null, // Resetear el municipio, ya que la lista ha cambiado.
+                departamentoId: departamentoIdSeleccionado, // <--- CAMBIO CLAVE: Guardar el ID
+                municipioId: null, // Resetear el municipio.
             }));
-            
-            // Si es el select de departamento, no hacemos más, ya manejamos el reseteo
-            return; 
+
+            // Eliminamos el 'return' para que se complete la función si fuera necesario,
+            // pero en este caso ya se manejó el estado, así que lo dejamos para optimizar.
+            return;
         }
 
         // 2. Actualiza el estado de RegistroVotacion (para los demás campos)
         setRegistroVotacion((r) => {
-            
+
             // Manejo de PascalCase para Nombres y Apellidos
             if (name === 'nombres' || name === 'apellidos') {
                 return {
@@ -93,7 +101,7 @@ const [selectedDepartamentoId, setSelectedDepartamentoId] = useState<number | ''
                     [name]: toPascalCase(finalValue as string),
                 };
             }
-            
+
             // Para todos los demás campos (cédula, municipioId, etc.)
             return {
                 ...r,
@@ -125,7 +133,7 @@ const [selectedDepartamentoId, setSelectedDepartamentoId] = useState<number | ''
 
 
 
-if (loading) return <p>Cargando datos...</p>;
+    if (loading) return <p>Cargando datos...</p>;
     return (
         <div className="container mt-5">
             <div className="card shadow">
@@ -194,17 +202,17 @@ if (loading) return <p>Cargando datos...</p>;
                                 onChange={handleChangeInputValue}
                                 type="text" className="form-control" name='comunaBarrio' />
                         </div>
-                        
+
                         {/* Fila 4: SELECTS CORREGIDOS */}
                         <div className="col-md-6">
                             <label htmlFor="departamentoSelect">Departamento</label>
-                            <select 
+                            <select
                                 id="departamentoSelect"
-                                className="form-select" 
+                                className="form-select"
                                 name='departamentoId'
                                 onChange={handleChangeInputValue}
                                 // Usamos el nuevo estado para controlar el valor seleccionado
-                                value={selectedDepartamentoId} 
+                                value={selectedDepartamentoId}
                             >
                                 {/* ELIMINADO: selected. Usamos value="" y disabled */}
                                 <option value="" disabled>Elija el departamento</option>
@@ -215,7 +223,7 @@ if (loading) return <p>Cargando datos...</p>;
                                 ))}
                             </select>
                         </div>
-                        
+
                         {/* Selector de Municipios */}
                         <div className="col-md-6">
                             <label htmlFor="municipioSelect">Municipio</label>
@@ -225,7 +233,7 @@ if (loading) return <p>Cargando datos...</p>;
                                 name='municipioId'
                                 onChange={handleChangeInputValue}
                                 // El valor es controlado por el estado de RegistroVotacion (o '' si es null)
-                                value={registroVotacion.municipioId || ''} 
+                                value={registroVotacion.municipioId || ''}
                                 disabled={ciudadPorDepartamento.length === 0}
                             >
                                 {/* Usamos value="" y disabled */}

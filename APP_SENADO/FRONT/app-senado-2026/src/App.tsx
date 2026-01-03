@@ -8,11 +8,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RenderApp />}>
-          <Route path="registro-votacion" element={<AllRegistroVotacion />}>
+          {/* <Route path="registro-votacion" element={<Default />}> */}
+          <Route path="registro-votacion" element={<Default />}>
+            {/* <Route path="crear" element={<Default />} /> */}
             <Route path="crear" element={<CrearRegistroVotacion />} />
             <Route path="actualizar" element={<Default />} />
             <Route path="eliminar" element={<Default />} />
-            <Route path="buscar" element={<Default />} />
+            <Route path="buscar" element={<AllRegistroVotacion />} />
             <Route path="buscar/:codigo" element={<Default />} />
           </Route>
           <Route path="inicio" element={<Default />} />
@@ -39,7 +41,8 @@ function RenderApp() {
   const navItems = [
     { name: 'Inicio', path: 'inicio', icon: 'pi pi-home' },
     { name: 'Registros', path: 'registro-votacion', icon: 'pi pi-calendar-plus' },
-    { name: 'Crear', path: 'registro-votacion/crear', icon: 'pi pi-calendar-plus' },
+    { name: 'Crear', path: '/registro-votacion/crear', icon: 'pi pi-calendar-plus' },
+    { name: 'Buscar', path: '/registro-votacion/buscar', icon: 'pi pi-calendar-plus' },
     { name: 'Lideres', path: 'lideres', icon: 'pi pi-users' },
     { name: 'Migración', path: 'migracion', icon: 'pi pi-upload' },
     { name: 'Login', path: 'login', icon: 'pi pi-sign-in' },
@@ -168,8 +171,14 @@ export default App;
 
 function Default() {
   return (
-    <div className="alert alert-info">
+    <div className="">
+      <div className="alert alert-info">
       VACIO
+
+      </div>
+      <div className="">
+        <Outlet/>
+      </div>
     </div>
   );
 }

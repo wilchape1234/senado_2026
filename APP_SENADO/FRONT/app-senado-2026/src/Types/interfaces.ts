@@ -4,6 +4,8 @@
 //   departamento: string;
 // }
 
+import { hoyFecha } from "../Functions/global";
+
 export interface Municipio {
   codigo_departamento: number;
   codigo_municipio: number;
@@ -67,7 +69,7 @@ export const regitroVotacionNulo: RegistroVotacion = {
   direccion: 'null',
   comunaBarrio: 'null',
   liderCedula: 0,
-  fechaRegistro: null,
+  fechaRegistro: hoyFecha,
   observacion: 'null',
 }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import { Outlet } from "react-router"
-import type { Ciudad, RegistroVotacion } from "../../Types/interfaces" // Solo necesitamos RegistroVotacion
-import { fetchRegistroVotacionPaginated, getAllCiudades } from "../../API/apiResponse";
+
+import type { Ciudad, Departamento, RegistroVotacion } from "../../Types/interfaces" // Solo necesitamos RegistroVotacion
+import { fetchRegistroVotacionPaginated, getAllCiudades, getAllDepartamentos } from "../../API/apiResponse";
 // Importamos la función enriquecida
 
 
@@ -13,6 +13,7 @@ function AllRegistroVotacion() {
     // El estado ahora usa el tipo enriquecido
     const [data, setData] = useState<RegistroVotacion[]>([])
     const [dataCiudades, setDataCiudades] = useState<Ciudad[]>([])
+    const [dataDepartamentos, setDataDepartamentos] = useState<Departamento[]>([])
     const [isLoading, setIsLoading] = useState(true);
     // Ya no necesitamos cityMap
 
@@ -22,12 +23,14 @@ function AllRegistroVotacion() {
             setIsLoading(true);
             try {
                 const ciudades = await getAllCiudades()
+                const departamentos = await getAllDepartamentos()
                 // Llamamos a la función única que trae datos paginados y enriquecidos
                 const response = await fetchRegistroVotacionPaginated({ skip: 0, limit: 10 });
 
                 // La data ya viene lista con 'nombreCiudad'
                 setData(response.data);
                 setDataCiudades(ciudades)
+                setDataDepartamentos(departamentos)
             } catch (error) {
                 console.error("Error al cargar los datos del registro de votación:", error);
                 setData([]); // Limpiar data en caso de error
@@ -39,12 +42,18 @@ function AllRegistroVotacion() {
         loadData();
     }, []);
 
-    // Ya no necesitamos la función getCityName()
 
-    const getNameC = (idMunicipio: number, data: Ciudad[]) => {
 
-        let val = data.find(f => f.id == idMunicipio)
-        return (val?.name || "N/A")
+    const getNameCiudad = (idMunicipio: number, data: Ciudad[]) => {
+
+        let mun = data.find(f => f.id == idMunicipio)
+        return (mun?.name || "N/A")
+    }
+    const getNameDep = (idMunicipio: number, data: Ciudad[]) => {
+
+        let mun = data.find(f => f.id == idMunicipio)
+        let dep = dataDepartamentos.find(d=>d.id==mun?.departmentId)
+        return (dep?.name || "N/A")
     }
 
     if (isLoading) {
@@ -62,6 +71,7 @@ function AllRegistroVotacion() {
                         <th scope="col">Nombre y Apellido</th>
                         <th scope="col">Mesa</th>
                         <th scope="col">Ciudad</th>
+                        <th scope="col">Departamento</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +85,8 @@ function AllRegistroVotacion() {
                                     <td>{r.nombres + ' ' + r.apellidos}</td>
                                     <td>{r.mesaVotacion}</td>
                                     {/* Usamos el campo enriquecido directamente */}
-                                    <td>{getNameC(Number(r.municipioId), dataCiudades)}</td>
+                                    <td>{getNameCiudad(Number(r.municipioId), dataCiudades)}</td>
+                                    <td>{getNameDep(Number(r.municipioId), dataCiudades)}</td>
                                 </tr>
                             );
                         })
@@ -87,13 +98,13 @@ function AllRegistroVotacion() {
 
                     <tr>
                         <th scope="row">end</th>
-                        <td colSpan={2}>Total de registros: {data.length}</td>
+                        <td colSpan={3}>Total de registros: {data.length}</td>
                         <td colSpan={2}></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <Outlet />
+        
     </>)
 }
 
