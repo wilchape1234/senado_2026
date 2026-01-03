@@ -182,7 +182,7 @@ function CrearRegistroVotacion() {
                             Con Gisella unidos habrán oportunidades al senado
                         </h1>
                     </div>
-
+{/*  */}
                     {/* Contenedor de la Imagen: Ajustado y con margen izquierdo */}
                     <div className="" style={{ height:'180px',maxHeight: '200px', flexShrink: 0 }}>
                         <img
