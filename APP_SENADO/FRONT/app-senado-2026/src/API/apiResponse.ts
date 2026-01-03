@@ -36,7 +36,12 @@ export interface BulkResponse {
     // Opcional: Si el backend devuelve detalles de error
     errors?: any[];
 }
-
+/* interface BulkResponse {
+    message: string;
+    insertedCount: number;
+    errorsCount: number;
+}
+ */
 
 
 export interface PaginatedResponse<T> {
@@ -58,76 +63,6 @@ export interface CheckExistsResponse {
 
 // --- MÉTODOS API ---
 
-/**
- * Realiza una petición GET al endpoint paginado de RegistroVotacion.
- *
- * @param params Los parámetros de consulta para paginación, búsqueda y ordenamiento.
- * @returns Una promesa que resuelve con los datos paginados (PaginatedResponse).
- */
-/**
- * Realiza una petición GET al endpoint paginado de RegistroVotacion,
- * enriqueciendo cada registro con el nombre de la ciudad.
- *
- * @param params Los parámetros de consulta para paginación, búsqueda y ordenamiento.
- * @returns Una promesa que resuelve con los datos paginados (PaginatedResponse<RegistroVotacion>).
- */
-// export async function fetchRegistroVotacionPaginated(
-//     params: FindAllQueryParams = { skip: 0, limit: 10 },
-// ): Promise<PaginatedResponse<RegistroVotacion>> { // TIPO ENRIQUECIDO
-
-//     const {
-//         skip = 0,
-//         limit = 10,
-//         search,
-//         status,
-//         sortBy,
-//         sortOrder,
-//     } = params;
-
-//     try {
-//         // 1. Obtener Registros y Ciudades en paralelo
-//         const votacionResponse = await Promise.all([
-//             axios.get<PaginatedResponse<RegistroVotacion>>(API_REG_VOTACION_ENDPOINT, {
-//                 params: {
-//                     skip: skip.toString(),
-//                     limit: limit.toString(),
-//                     search: search,
-//                     status: status,
-//                     sortBy: sortBy,
-//                     sortOrder: sortOrder,
-//                 },
-//             }),
-             
-//         ]);
-        
-//         // 4. Retornamos la respuesta paginada con los datos enriquecidos
-//         return {
-//             paginatedData,
-
-//              // Tipado forzado para el retorno
-//         };
-
-//     } catch (error) {
-//         // ... (Manejo de errores que ya tenías)
-//         if (axios.isAxiosError(error)) {
-//             console.error(
-//                 'Error al obtener RegistroVotacion:',
-//                 error.response?.data || error.message,
-//             );
-//             throw new Error(
-//                 `Fallo la petición: ${error.response?.statusText || error.message}`,
-//             );
-//         }
-
-//         if (error instanceof Error) {
-//             console.error('Error desconocido:', error.message);
-//             throw new Error(`Error en la aplicación: ${error.message}`);
-//         }
-
-//         console.error('Error completamente desconocido o no tipado:', error);
-//         throw new Error('Error desconocido al comunicarse con la API.');
-//     }
-// }
 export async function fetchRegistroVotacionPaginated(
     // CAMBIADO: Usamos skip en lugar de page
     params: FindAllQueryParams = { skip: 0, limit: 10 }, // Usar skip por defecto 0
@@ -204,6 +139,36 @@ export async function createRegistroVotacion(data: RegistroVotacion): Promise<Re
         handleAxiosError(error, 'Crear RegistroVotacion de Comisión');
     }
 }
+/**
+ * Realiza una petición POST al endpoint de inserción masiva.
+ * * @param data Array de objetos (registros) a migrar.
+ * @returns Una promesa que resuelve con el resumen de la migración (BulkResponse).
+ */
+
+const API_REG_VOTACION_ENDPOINT_MIGRACION = API_REG_VOTACION_ENDPOINT + "/migracion-masiva";
+export async function bulkInsertRegistroVotacion(
+    data: Partial<RegistroVotacion>[] // Usamos Partial porque los datos del CSV pueden no ser completos/finales
+): Promise<BulkResponse> {
+
+    // El backend de NestJS espera un cuerpo con la propiedad 'records' (BulkInsertDto)
+    const payload = {
+        records: data,
+    };
+
+    try {
+        const response: AxiosResponse<BulkResponse> = await axios.post(
+            API_REG_VOTACION_ENDPOINT_MIGRACION,
+            payload, // Enviamos el objeto con la clave 'records'
+        );
+
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error, 'Migración Masiva de Funcionarios');
+        // `handleAxiosError` siempre lanza, por lo que esta línea es redundante pero requerida por TS.
+        throw error;
+    }
+}
+
 function handleAxiosError(error: unknown, context: string): never {
     if (axios.isAxiosError(error)) {
         console.error(`${context}:`, error.response?.data || error.message);
@@ -233,8 +198,8 @@ export async function getAllCiudades(): Promise<Ciudad[]> {
 /* Departamentos */
 export async function getAllDepartamentos(): Promise<Departamento[]> {
     try {
-        const responseCiu: AxiosResponse<Departamento[]> = await axios.get(`http://${BASE_URL_SERVER_API}:3000/api/v1/departamentos`);
-        return responseCiu.data;
+        const responseDep: AxiosResponse<Departamento[]> = await axios.get(`http://${BASE_URL_SERVER_API}:3000/api/v1/departamentos`);
+        return responseDep.data;
     } catch (error) {
         console.error("Error al obtener departamentos:", error);
         return [];
