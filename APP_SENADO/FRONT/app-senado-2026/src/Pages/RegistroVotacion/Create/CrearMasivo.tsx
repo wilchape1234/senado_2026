@@ -210,9 +210,9 @@ export function CrearRegistroVotacionMasivo() {
 
                                     <tr>
                                         <th>{i + 1}</th>
-                                        <th>{d.cedula}</th>
-                                        <th>{d.nombres}</th>
-                                        <th>{d.lugarVotacion}</th>
+                                        <td>{d.cedula}</td>
+                                        <td>{d.nombres}</td>
+                                        <td>{d.lugarVotacion}</td>
                                     </tr>
 
                                 ))}
