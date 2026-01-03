@@ -63,8 +63,8 @@ function RenderApp() {
     <div className="d-flex flex-column min-vh-100 bg-light">
 
       {/* 1. Encabezado (Navbar) */}
-      <nav 
-        className="navbar navbar-expand-md sticky-top shadow-sm p-3" 
+      <nav
+        className="navbar navbar-expand-md sticky-top shadow-sm p-3"
         style={{ backgroundColor: customBlue900 }}
       >
         <div className="container-fluid">
@@ -91,29 +91,32 @@ function RenderApp() {
 
           {/* Botón de menú móvil (Toggler) */}
           <button
+            style={{ border: '1px solid white' }}
             className="btn btn-outline-light d-md-none border-0"
             type="button"
             onClick={() => setSidebarVisible(true)}
             aria-label="Abrir Menú"
           >
-            <span className="pi pi-bars fs-4"></span>
+            
+            <span className="pi pi-bars fs-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-menu-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" /></svg>
+            </span>
           </button>
         </div>
       </nav>
 
       {/* 2. Sidebar para navegación móvil (Offcanvas de Bootstrap) */}
-      <div 
-        className={`offcanvas offcanvas-start ${sidebarVisible ? 'show' : ''}`} 
-        tabIndex={-1} 
-        style={{ visibility: sidebarVisible ? 'visible' : 'hidden' }}
+      <div
+        className={`offcanvas offcanvas-start ${sidebarVisible ? 'show' : ''}`}
+        tabIndex={-1}
         id="mobileMenu"
       >
         <div className="offcanvas-header border-bottom">
           <h5 className="offcanvas-title text-dark">Menú Principal</h5>
-          <button 
-            type="button" 
-            className="btn-close text-reset" 
-            onClick={() => setSidebarVisible(false)} 
+          <button
+            type="button"
+            className="btn-close text-reset"
+            onClick={() => setSidebarVisible(false)}
             aria-label="Cerrar"
           ></button>
         </div>
@@ -123,15 +126,16 @@ function RenderApp() {
             <h6 className="text-muted text-uppercase small fw-bold mb-3">Navegación</h6>
             <div className="list-group list-group-flush">
               {navItems.map((item) => (
-                <button
+                <Link // <-- Usamos Link directo
                   key={item.name}
-                  type="button"
-                  onClick={() => handleNavigation(item.path)}
+                  to={item.path}
+                  // Aseguramos que se cierre el menú inmediatamente al hacer clic
+                  onClick={() => setSidebarVisible(false)}
                   className="list-group-item list-group-item-action border-0 d-flex align-items-center py-3 rounded mb-1"
                 >
                   <span className={`${item.icon} me-3 fs-5`}></span>
                   {item.name}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
@@ -140,8 +144,8 @@ function RenderApp() {
 
       {/* Overlay (Backdrop) manual para Bootstrap Offcanvas cuando se abre desde React state */}
       {sidebarVisible && (
-        <div 
-          className="offcanvas-backdrop fade show" 
+        <div
+          className="offcanvas-backdrop fade show"
           onClick={() => setSidebarVisible(false)}
         ></div>
       )}
@@ -161,7 +165,7 @@ function RenderApp() {
           Derechos reservados a eschala 2026
         </div>
       </footer>
-      
+
       {/* Estilos inline para emular el hover simple de Tailwind si no usas CSS custom */}
       <style>{`
         .hover-effect:hover {
@@ -178,12 +182,12 @@ function Default() {
   return (
     <div className="">
       <div className="alert alert-info d-none">
-      VACIO
+        VACIO
 
       </div>
-      
+
       <div className="">
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
   );
