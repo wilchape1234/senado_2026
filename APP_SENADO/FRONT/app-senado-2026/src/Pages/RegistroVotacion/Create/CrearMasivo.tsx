@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { bulkInsertRegistroVotacion, type BulkResponse } from "../../../API/apiResponse";
 import type { RegistroVotacion } from "../../../Types/interfaces";
 
+
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { useDropzone } from "react-dropzone";
