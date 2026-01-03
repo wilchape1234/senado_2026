@@ -90,28 +90,28 @@ let errorMsg: string = '';
             break;
 
         case ('municipioId'):
-        case ('departamentoId'):
-            // Para Selects/IDs, aseguramos que se haya seleccionado un valor numérico > 0
-            if (!Number(value) || value === 0) {
-                errorMsg = 'Debe seleccionar un valor.';
-            }
-            break;
+        // case ('departamentoId'):
+        //     // Para Selects/IDs, aseguramos que se haya seleccionado un valor numérico > 0
+        //     if (!Number(value) || value === 0) {
+        //         errorMsg = 'Debe seleccionar un valor.';
+        //     }
+        //     break;
 
         // case ('liderCedula'):
-        case ('mesaVotacion'):
-            if (!Number(value)) {
-                errorMsg = 'Debe ser un valor numérico.';
-            }
-            break;
+        // case ('mesaVotacion'):
+        //     if (!Number(value)) {
+        //         errorMsg = 'Debe ser un valor numérico.';
+        //     }
+        //     break;
 
         case ('nombres'):
         case ('apellidos'):
-        case ('lugarVotacion'):
-        case ('direccion'):
-        // case ('comunaBarrio'):
-            // case ('observacion'):
-            // Tu lógica requiere que se permitan espacios internos (ej: 'Eduar Samir'),
-            // por lo que solo verificamos que no esté vacío después de .trim().
+/*         case ('lugarVotacion'): */
+        // case ('direccion'):
+/*         case ('comunaBarrio'):
+            case ('observacion'):
+            Tu lógica requiere que se permitan espacios internos (ej: 'Eduar Samir'),
+            por lo que solo verificamos que no esté vacío después de .trim(). */
             if (!strValue) {
                 errorMsg = 'Este campo es obligatorio.';
             }
@@ -123,13 +123,13 @@ let errorMsg: string = '';
             }
             break;
 
-        case ('correoElectronico'):
+/*         case ('correoElectronico'):
             // Validación básica: debe contener '@' y '.' y no estar vacío.
             if (!strValue || !(strValue.includes('@') && strValue.includes('.'))) {
                 errorMsg = 'Ingrese un formato de correo válido (ej: usuario@dominio.com).';
             }
             break;
-
+ */
         default:
             break;
     }
