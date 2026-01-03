@@ -175,7 +175,7 @@ function CrearRegistroVotacion() {
         <div className="container mt-5">
             <div className="card shadow">
                 <div className="header p-4 text-white d-flex align-items-center justify-content-between flex-wrap" style={{ backgroundColor: '#1e3a8a' }}>
-                    <h1>IP DEL SERVIDOR {hostname}</h1>
+                    
                     {/* Contenedor del Título: Permite que el texto se ajuste */}
                     <div className="me-3">
                         <h1 className="fs-4 fw-bold mb-0" style={{ whiteSpace: 'normal' }}>
