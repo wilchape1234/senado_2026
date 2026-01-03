@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
-import { CrearRegistroVotacion } from "./Pages/RegistroVotacion/Crear";
+import { CrearRegistroVotacion, CrearRegistroVotacionMasivo } from "./Pages/RegistroVotacion/Crear";
 import { AllRegistroVotacion } from "./Pages/RegistroVotacion/Index";
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
           <Route path="registro-votacion" element={<Default />}>
             {/* <Route path="crear" element={<Default />} /> */}
             <Route path="crear" element={<CrearRegistroVotacion />} />
+            <Route path="crear-masivos" element={<CrearRegistroVotacionMasivo />} />
             <Route path="actualizar" element={<Default />} />
             <Route path="eliminar" element={<Default />} />
             <Route path="ver" element={<AllRegistroVotacion />} />
@@ -42,6 +43,7 @@ function RenderApp() {
     { name: 'Inicio', path: 'inicio', icon: 'pi pi-home' },
     // { name: 'Registros', path: 'registro-votacion', icon: 'pi pi-calendar-plus' },
     { name: 'Registar Votantes ', path: '/registro-votacion/crear', icon: 'pi pi-calendar-plus' },
+    { name: 'Registar Votantes Masivo ', path: '/registro-votacion/crear-masivos', icon: 'pi pi-calendar-plus' },
     { name: 'Ver Votantes', path: '/registro-votacion/ver', icon: 'pi pi-calendar-plus' },
     { name: 'Lideres', path: 'lideres', icon: 'pi pi-users' },
     { name: 'Migración', path: 'migracion', icon: 'pi pi-upload' },

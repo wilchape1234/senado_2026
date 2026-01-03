@@ -1,2 +1,7 @@
 npm i react-router
 npm i axios
+npm i papaparse
+npm i xlsx
+npm i react-dropzone
+npm i --save-dev @types/papaparse
+// npm i papaparse xlsx react-dropzone

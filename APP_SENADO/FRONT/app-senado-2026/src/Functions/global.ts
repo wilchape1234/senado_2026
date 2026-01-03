@@ -97,7 +97,7 @@ let errorMsg: string = '';
             }
             break;
 
-        case ('liderCedula'):
+        // case ('liderCedula'):
         case ('mesaVotacion'):
             if (!Number(value)) {
                 errorMsg = 'Debe ser un valor numérico.';
@@ -108,7 +108,7 @@ let errorMsg: string = '';
         case ('apellidos'):
         case ('lugarVotacion'):
         case ('direccion'):
-        case ('comunaBarrio'):
+        // case ('comunaBarrio'):
             // case ('observacion'):
             // Tu lógica requiere que se permitan espacios internos (ej: 'Eduar Samir'),
             // por lo que solo verificamos que no esté vacío después de .trim().
