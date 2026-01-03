@@ -1,10 +1,8 @@
 import { useEffect, useState, type ChangeEvent, } from "react";
-import { regitroVotacionNulo, type Ciudad, type Departamento, type RegistroVotacion, } from "../../Types/interfaces";
+import { regitroVotacionNulo, type Ciudad, type Departamento, type RegistroVotacion, } from "../../../Types/interfaces";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-import { toPascalCase } from "../../Functions/formatters";
-import { bulkInsertRegistroVotacion, createRegistroVotacion, type BulkResponse } from "../../API/apiResponse";
-import { initialValidationErrors, validarRegistro, type ValidationErrors, } from "../../Functions/global";
+
 import { useCallback } from 'react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
@@ -12,7 +10,12 @@ import * as XLSX from 'xlsx';
 import { useDropzone } from 'react-dropzone'; // Importación necesaria
 
 /* Imgenes */
-import gisselaImage from "../../assets/Img/gissela_70_1.jpeg";
+import gisselaImage from "../../../assets/Img/gissela_70_1.jpeg";
+import { initialValidationErrors, validarRegistro, type ValidationErrors } from "../../../Functions/global";
+import { toPascalCase } from "../../../Functions/formatters";
+import { bulkInsertRegistroVotacion, createRegistroVotacion, type BulkResponse } from "../../../API/apiResponse";
+
+export const imagenGisela_1 = gisselaImage;
 
 /* Imgenes */
 
