@@ -63,7 +63,7 @@ function AllRegistroVotacion() {
 
     // **Renderizado del Componente**
     return (<>
-        <div className="container-table m-5">
+        <div className="container-table m-5 overflow-auto">
             <table className="table table-bordered rounded-2">
                 <thead className="">
                     <tr>
