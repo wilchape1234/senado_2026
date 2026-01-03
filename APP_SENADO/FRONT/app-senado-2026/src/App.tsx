@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
-import { CrearRegistroVotacion, CrearRegistroVotacionMasivo } from "./Pages/RegistroVotacion/Crear";
+import { CrearRegistroVotacion,  } from "./Pages/RegistroVotacion/Create/Crear";
 import { AllRegistroVotacion } from "./Pages/RegistroVotacion/Index";
+import { CrearRegistroVotacionMasivo } from "./Pages/RegistroVotacion/Create/CrearMasivo";
 
 function App() {
   return (
