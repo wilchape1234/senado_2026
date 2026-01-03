@@ -10,17 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router": "^7.11.0"
-=======
-    "bootstrap": "^5.3.8",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
->>>>>>> d682522a6eb67fa49319fac06f7aa220e05c59a4
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
