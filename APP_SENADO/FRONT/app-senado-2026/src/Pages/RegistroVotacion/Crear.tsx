@@ -174,17 +174,17 @@ function CrearRegistroVotacion() {
     return (
         <div className="container mt-5">
             <div className="card shadow">
-                <div className="header p-4 text-white d-flex align-items-center justify-content-between flex-wrap" style={{backgroundColor:'#1e3a8a'}}>
-
+                <div className="header p-4 text-white d-flex align-items-center justify-content-between flex-wrap" style={{ backgroundColor: '#1e3a8a' }}>
+                    <h1>IP DEL SERVIDOR {hostname}</h1>
                     {/* Contenedor del Título: Permite que el texto se ajuste */}
                     <div className="me-3">
                         <h1 className="fs-4 fw-bold mb-0" style={{ whiteSpace: 'normal' }}>
                             Con Gisella unidos habrán oportunidades al senado
                         </h1>
                     </div>
-{/*  */}
+                    {/*  */}
                     {/* Contenedor de la Imagen: Ajustado y con margen izquierdo */}
-                    <div className="" style={{ height:'180px',maxHeight: '200px', flexShrink: 0 }}>
+                    <div className="" style={{ height: '180px', maxHeight: '200px', flexShrink: 0 }}>
                         <img
                             src={gisselaImage}
                             alt="Gisella"
@@ -194,7 +194,7 @@ function CrearRegistroVotacion() {
                     </div>
 
                 </div>
-                <div className="card-body" style={{backgroundColor:'rgba(255, 102, 0, 0.15)'}}>
+                <div className="card-body" style={{ backgroundColor: 'rgba(255, 102, 0, 0.15)' }}>
                     <form className="row g-3">
 
                         {/* Cédula */}
@@ -360,7 +360,7 @@ function CrearRegistroVotacion() {
                             <label className="form-label" htmlFor="liderCedula">Líder al que representa</label>
                             <input
                                 // onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='liderCedula' id="liderCedula"/>
+                                type="text" className="form-control" name='liderCedula' id="liderCedula" />
                             {validationErrors.liderCedula && (
                                 <div className="text-danger small mt-1">{validationErrors.liderCedula}</div>
                             )}
