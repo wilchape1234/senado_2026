@@ -5,3 +5,5 @@ npm i xlsx
 npm i react-dropzone
 npm i --save-dev @types/papaparse
 // npm i papaparse xlsx react-dropzone
+npx localtunnel --port 5173
+npm install -g localtunnel

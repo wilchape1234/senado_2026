@@ -26,7 +26,7 @@ function AllRegistroVotacion() {
                 const ciudades = await getAllCiudades()
                 const departamentos = await getAllDepartamentos()
                 // Llamamos a la función única que trae datos paginados y enriquecidos
-                const response = await fetchRegistroVotacionPaginated({ skip: 0, limit: 10 });
+                const response = await fetchRegistroVotacionPaginated({ skip: 0, limit: 50 });
 
                 // La data ya viene lista con 'nombreCiudad'
                 setData(response.data);
@@ -83,7 +83,7 @@ function AllRegistroVotacion() {
                                 <tr key={index}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{r.cedula}</td>
-                                    <td>{r.nombres + ' ' + r.apellidos}</td>
+                                    <td>{r.nombres + ' ' + (r.apellidos||'')}</td>
                                     <td>{r.mesaVotacion}</td>
                                     {/* Usamos el campo enriquecido directamente */}
                                     <td>{getNameCiudad(Number(r.municipioId), dataCiudades)}</td>

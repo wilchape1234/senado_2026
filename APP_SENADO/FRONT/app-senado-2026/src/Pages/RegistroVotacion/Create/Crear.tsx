@@ -190,7 +190,7 @@ function CrearRegistroVotacion() {
 
 
     if (loading) return (
-        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '700px' }}>
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '70vh' }}>
             <div className="spinner-border spinner-border-lg text-primary" role="status" style={{ height: '6rem', width: '6rem', }}>
                 <span className="visually-hidden">Cargando...</span>
             </div>

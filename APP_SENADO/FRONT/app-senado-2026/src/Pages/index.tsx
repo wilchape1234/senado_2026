@@ -32,7 +32,7 @@ export const Incio = () => {
                 <div className="carousel-inner">
                     <div className="carousel-item active">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_1} className="d-block w-100" alt="Primera imagen" />
                         <div className="carousel-caption d-none d-md-block">
                             <h5>Gissela</h5>
@@ -41,37 +41,37 @@ export const Incio = () => {
                     </div>
                     <div className="carousel-item">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_2} className="d-block w-100" alt="Segunda imagen" />
                     </div>
                     <div className="carousel-item">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_3} className="d-block w-100" alt="Tercera imagen" />
                     </div>
                     <div className="carousel-item">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_4} className="d-block w-100" alt="Tercera imagen" />
                     </div>
                     <div className="carousel-item">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_5} className="d-block w-100" alt="Tercera imagen" />
                     </div>
                     <div className="carousel-item">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_6} className="d-block w-100" alt="Tercera imagen" />
                     </div>
                     <div className="carousel-item">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_7} className="d-block w-100" alt="Tercera imagen" />
                     </div>
                     <div className="carousel-item">
                         <img 
-                        style={{borderRadius:'3rem'}}
+                        style={{borderRadius:'1rem'}}
                         src={img_8} className="d-block w-100" alt="Tercera imagen" />
                     </div>
                 </div>

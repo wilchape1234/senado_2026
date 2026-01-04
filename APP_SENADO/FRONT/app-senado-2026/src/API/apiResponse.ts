@@ -65,12 +65,12 @@ export interface CheckExistsResponse {
 
 export async function fetchRegistroVotacionPaginated(
     // CAMBIADO: Usamos skip en lugar de page
-    params: FindAllQueryParams = { skip: 0, limit: 10 }, // Usar skip por defecto 0
+    params: FindAllQueryParams = { skip: 0, limit: 50 }, // Usar skip por defecto 0
 ): Promise<PaginatedResponse<RegistroVotacion>> {
 
     const {
         skip = 0, // Usamos skip directamente
-        limit = 10, // Usar 10 como límite por defecto (coincide con TablaRegistrosF)
+        limit = 50, // Usar 10 como límite por defecto (coincide con TablaRegistrosF)
         search,
         status,
         sortBy,
