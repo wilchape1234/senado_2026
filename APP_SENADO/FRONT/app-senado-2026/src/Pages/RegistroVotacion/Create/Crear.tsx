@@ -200,22 +200,23 @@ function CrearRegistroVotacion() {
     return (
         <div className="container mt-5">
             <div className="card shadow">
-                <div className="header p-4 text-white d-flex align-items-center justify-content-between flex-wrap" style={{ backgroundColor: '#1e3a8a' }}>
+                <div className="header p-4 text-white d-flex flex-row align-items-center justify-content-between flex-wrap" style={{ backgroundColor: '#1e3a8a' }}>
 
-                    {/* Contenedor del Título: Permite que el texto se ajuste */}
-                    <div className="m-3">
-                        <p className="fw-bold mb-0 text-uppercase" style={{ whiteSpace: 'normal', fontSize: '2rem' }}>
+                    {/* 1. Contenedor del Título: col-12 en móvil, más ancho en desktop */}
+                    <div className="d-flex justify-content-center col-12 col-lg-8">
+                        <p className="fw-bold mb-0 text-uppercase fs-1" style={{ whiteSpace: 'normal', textWrap: 'wrap' }}>
                             Con Gissela al senado habrán oportunidades para todos
                         </p>
                     </div>
-                    {/*  */}
-                    {/* Contenedor de la Imagen: Ajustado y con margen izquierdo */}
-                    <div className="" style={{ height: '180px', maxHeight: '200px', flexShrink: 0 }}>
+
+                    {/* 2. Contenedor de la Imagen: col-12 en móvil, más pequeño en desktop */}
+                    {/* Nota: También eliminé la clase `w-100` y el `flex-grow-1` redundantes */}
+                    <div className="d-flex justify-content-center justify-content-lg-end col-12 col-lg-4" style={{ height: '180px', maxHeight: '200px' }}>
                         <img
                             src={gisselaImage}
                             alt="Gisella"
                             className="img-fluid rounded-2"
-                            style={{ maxHeight: '100%', /* maxWidth: '80px' */ }}
+                            style={{ maxHeight: '100%', alignSelf: 'center' }}
                         />
                     </div>
 
