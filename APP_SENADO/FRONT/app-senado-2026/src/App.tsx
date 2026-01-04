@@ -4,6 +4,8 @@ import { BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from "react-r
 import { AllRegistroVotacion } from "./Pages/RegistroVotacion/Index";
 import { CrearRegistroVotacionMasivo } from "./Pages/RegistroVotacion/Create/CrearMasivo";
 import { CrearRegistroVotacion } from "./Pages/RegistroVotacion/Create/Crear";
+import { IconMenu2 } from "@tabler/icons-react";
+import { Incio } from "./Pages";
 
 
 function App() {
@@ -21,7 +23,7 @@ function App() {
             <Route path="ver" element={<AllRegistroVotacion />} />
             <Route path="ver/:codigo" element={<Default />} />
           </Route>
-          <Route path="inicio" element={<Default />} />
+          <Route path="inicio" element={<Incio />} />
           <Route path="login" element={<Default />} />
           <Route path="lideres" element={<Default />}>
             <Route path="crear" element={<Default />} />
@@ -47,9 +49,9 @@ function RenderApp() {
     // { name: 'Registros', path: 'registro-votacion', icon: 'pi pi-calendar-plus' },
     { name: 'Registar Votantes ', path: '/registro-votacion/crear', icon: 'pi pi-calendar-plus' },
     { name: 'Registar Votantes Masivo ', path: '/registro-votacion/crear-masivos', icon: 'pi pi-calendar-plus' },
-    { name: 'Ver Votantes', path: '/registro-votacion/ver', icon: 'pi pi-calendar-plus' },
-    { name: 'Lideres', path: 'lideres', icon: 'pi pi-users' },
-    { name: 'Migración', path: 'migracion', icon: 'pi pi-upload' },
+    // { name: 'Ver Votantes', path: '/registro-votacion/ver', icon: 'pi pi-calendar-plus' },
+    // { name: 'Lideres', path: 'lideres', icon: 'pi pi-users' },
+    // { name: 'Migración', path: 'migracion', icon: 'pi pi-upload' },
     // { name: 'Login', path: 'login', icon: 'pi pi-sign-in' },
   ];
 
@@ -99,7 +101,8 @@ function RenderApp() {
           >
             
             <span className="pi pi-bars fs-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-menu-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" /></svg>
+              <IconMenu2></IconMenu2>
+              
             </span>
           </button>
         </div>
