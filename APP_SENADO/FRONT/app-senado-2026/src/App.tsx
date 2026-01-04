@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
+import { BrowserRouter, Link, Navigate, Outlet, Route, Routes, useNavigate } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
 
 import { AllRegistroVotacion } from "./Pages/RegistroVotacion/Index";
 import { CrearRegistroVotacionMasivo } from "./Pages/RegistroVotacion/Create/CrearMasivo";
@@ -13,6 +13,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RenderApp />}>
+        <Route 
+            index 
+            element={<Navigate to="inicio" replace />} 
+          />
           {/* <Route path="registro-votacion" element={<Default />}> */}
           <Route path="registro-votacion" element={<Default />}>
             {/* <Route path="crear" element={<Default />} /> */}
@@ -48,7 +52,7 @@ function RenderApp() {
     { name: 'Inicio', path: 'inicio', icon: 'pi pi-home' },
     // { name: 'Registros', path: 'registro-votacion', icon: 'pi pi-calendar-plus' },
     { name: 'Registar Votantes ', path: '/registro-votacion/crear', icon: 'pi pi-calendar-plus' },
-    { name: 'Registar Votantes Masivo ', path: '/registro-votacion/crear-masivos', icon: 'pi pi-calendar-plus' },
+    // { name: 'Registar Votantes Masivo ', path: '/registro-votacion/crear-masivos', icon: 'pi pi-calendar-plus' },
     // { name: 'Ver Votantes', path: '/registro-votacion/ver', icon: 'pi pi-calendar-plus' },
     // { name: 'Lideres', path: 'lideres', icon: 'pi pi-users' },
     // { name: 'Migración', path: 'migracion', icon: 'pi pi-upload' },
@@ -56,10 +60,10 @@ function RenderApp() {
   ];
 
   // Función para manejar la navegación desde el menú móvil
-  const handleNavigation = (path: string) => {
-    setSidebarVisible(false); // Cerrar el Sidebar
-    navigate(path);
-  };
+  // const handleNavigation = (path: string) => {
+  //   setSidebarVisible(false); // Cerrar el Sidebar
+  //   navigate(path);
+  // };
 
   return (
     <div className="d-flex flex-column min-vh-100 bg-light">
@@ -164,8 +168,8 @@ function RenderApp() {
         className="text-center py-3 mt-auto text-white"
         style={{ backgroundColor: customBlue900 }}
       >
-        <div className="small">
-          Derechos reservados a eschala 2026
+        <div className="small fw-bold">
+          Derechos reservados a eschala y wilchape 2026
         </div>
       </footer>
 

@@ -189,7 +189,14 @@ function CrearRegistroVotacion() {
 
 
 
-    if (loading) return <p>Cargando datos...</p>;
+    if (loading) return (
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '700px' }}>
+            <div className="spinner-border spinner-border-lg text-primary" role="status" style={{ height: '6rem', width: '6rem', }}>
+                <span className="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+
+    );
     return (
         <div className="container mt-5">
             <div className="card shadow">
@@ -221,9 +228,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Cédula</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='cedula' 
+                                type="text" className="form-control" name='cedula'
                                 value={registroVotacion.cedula || ''}
-                                />
+                            />
                             {/* 💥 CAMBIO CLAVE 3: Mostrar el error */}
                             {validationErrors.cedula && (
                                 <div className="text-danger small mt-1">{validationErrors.cedula}</div>
@@ -235,9 +242,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Nombres</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='nombres' 
+                                type="text" className="form-control" name='nombres'
                                 value={registroVotacion.nombres || ''}
-                                />
+                            />
                             {/* 💥 CAMBIO CLAVE 3: Mostrar el error */}
                             {validationErrors.nombres && (
                                 <div className="text-danger small mt-1">{validationErrors.nombres}</div>
@@ -249,9 +256,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Apellidos</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='apellidos' 
+                                type="text" className="form-control" name='apellidos'
                                 value={registroVotacion.apellidos || ''}
-                                />
+                            />
                             {/* 💥 CAMBIO CLAVE 3: Mostrar el error */}
                             {validationErrors.apellidos && (
                                 <div className="text-danger small mt-1">{validationErrors.apellidos}</div>
@@ -265,9 +272,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">N° Celular</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="tel" className="form-control" name='numeroCelular' 
+                                type="tel" className="form-control" name='numeroCelular'
                                 value={registroVotacion.numeroCelular || ''}
-                                />
+                            />
                             {validationErrors.numeroCelular && (
                                 <div className="text-danger small mt-1">{validationErrors.numeroCelular}</div>
                             )}
@@ -278,9 +285,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Correo Electrónico</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="email" className="form-control" name='correoElectronico' 
+                                type="email" className="form-control" name='correoElectronico'
                                 value={registroVotacion.correoElectronico || ''}
-                                />
+                            />
                             {validationErrors.correoElectronico && (
                                 <div className="text-danger small mt-1">{validationErrors.correoElectronico}</div>
                             )}
@@ -291,9 +298,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Mesa de votación</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='mesaVotacion' 
+                                type="text" className="form-control" name='mesaVotacion'
                                 value={registroVotacion.mesaVotacion || ''}
-                                />
+                            />
                             {validationErrors.mesaVotacion && (
                                 <div className="text-danger small mt-1">{validationErrors.mesaVotacion}</div>
                             )}
@@ -304,9 +311,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Lugar de votación</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='lugarVotacion' 
+                                type="text" className="form-control" name='lugarVotacion'
                                 value={registroVotacion.lugarVotacion || ''}
-                                />
+                            />
                             {validationErrors.lugarVotacion && (
                                 <div className="text-danger small mt-1">{validationErrors.lugarVotacion}</div>
                             )}
@@ -317,9 +324,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Direccion </label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='direccion' 
+                                type="text" className="form-control" name='direccion'
                                 value={registroVotacion.direccion || ''}
-                                />
+                            />
                             {validationErrors.direccion && (
                                 <div className="text-danger small mt-1">{validationErrors.direccion}</div>
                             )}
@@ -330,9 +337,9 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Comuna Barrio </label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='comunaBarrio' 
+                                type="text" className="form-control" name='comunaBarrio'
                                 value={registroVotacion.comunaBarrio || ''}
-                                />
+                            />
                             {validationErrors.comunaBarrio && (
                                 <div className="text-danger small mt-1">{validationErrors.comunaBarrio}</div>
                             )}
@@ -388,8 +395,8 @@ function CrearRegistroVotacion() {
                             <label className="form-label">Cedula Líder al que representa</label>
                             <input
                                 onChange={handleChangeInputValue}
-                                type="text" className="form-control" name='liderCedula' 
-                                value={registroVotacion.liderCedula || ''}/>
+                                type="text" className="form-control" name='liderCedula'
+                                value={registroVotacion.liderCedula || ''} />
                             {validationErrors.liderCedula && (
                                 <div className="text-danger small mt-1">{validationErrors.liderCedula}</div>
                             )}
@@ -413,7 +420,7 @@ function CrearRegistroVotacion() {
                                 onChange={handleChangeInputValue}
                                 className="form-control" name='observacion' rows={3}
                                 value={registroVotacion.observacion || ''}
-                                ></textarea>
+                            ></textarea>
                             {/* {validationErrors.observacion && (
                                 <div className="text-danger small mt-1">{validationErrors.observacion}</div>
                             )} */}
