@@ -204,9 +204,9 @@ function CrearRegistroVotacion() {
 
                     {/* Contenedor del Título: Permite que el texto se ajuste */}
                     <div className="m-3">
-                        <h1 className="fw-bold mb-0" style={{ whiteSpace: 'normal', fontSize: '2rem' }}>
-                            Con Gisella unidos habrán oportunidades al senado
-                        </h1>
+                        <p className="fw-bold mb-0 text-uppercase" style={{ whiteSpace: 'normal', fontSize: '2rem' }}>
+                            Con Gissela al senado habrán oportunidades para todos
+                        </p>
                     </div>
                     {/*  */}
                     {/* Contenedor de la Imagen: Ajustado y con margen izquierdo */}
