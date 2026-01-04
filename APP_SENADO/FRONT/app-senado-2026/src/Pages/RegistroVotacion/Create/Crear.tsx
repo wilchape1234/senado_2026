@@ -204,19 +204,19 @@ function CrearRegistroVotacion() {
 
                     {/* 1. Contenedor del Título: col-12 en móvil, más ancho en desktop */}
                     <div className="d-flex justify-content-center col-12 col-lg-8">
-                        <p className="fw-bold mb-0 text-uppercase fs-1" style={{ whiteSpace: 'normal', textWrap: 'wrap' }}>
+                        <p className="fw-bold mb-0 text-uppercase fs-1 text-center text-md-start p-2" style={{ whiteSpace: 'normal', textWrap: 'wrap' }}>
                             Con Gissela al senado habrán oportunidades para todos
                         </p>
                     </div>
 
                     {/* 2. Contenedor de la Imagen: col-12 en móvil, más pequeño en desktop */}
                     {/* Nota: También eliminé la clase `w-100` y el `flex-grow-1` redundantes */}
-                    <div className="d-flex justify-content-center justify-content-lg-end col-12 col-lg-4" style={{ height: '180px', maxHeight: '200px' }}>
+                    <div className="d-flex justify-content-center justify-content-lg-end col-12 col-lg-4" style={{ /* height: '180px', */ /* maxHeight: '300px' */ }}>
                         <img
                             src={gisselaImage}
                             alt="Gisella"
-                            className="img-fluid rounded-2"
-                            style={{ maxHeight: '100%', alignSelf: 'center' }}
+                            className="rounded-2 img-fluid"
+                            style={{ maxWidth: '100%', margin:'1rem' }}
                         />
                     </div>
 
