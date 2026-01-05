@@ -7,6 +7,7 @@ echo     Iniciando Servidor Backend (API NestJS)
 echo =======================================================
 echo.
 
+START cmd /k "Wampserver64.lnk"
 START cmd /k "cd BACK\api-senado-2026 && npm run start:debug"
 
 @REM echo.

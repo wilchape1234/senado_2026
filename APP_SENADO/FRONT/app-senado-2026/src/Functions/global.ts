@@ -46,7 +46,7 @@ export const initialValidationErrors: ValidationErrors = {
 };
 
 
-const validarCedula = async (cedula: number) => {
+export const validarCedula = async (cedula: number) => {
 
     let evaluar = await fetchRegistroVotacionByCedula(cedula)
 
@@ -57,10 +57,17 @@ const validarCedula = async (cedula: number) => {
  * Si el campo es válido, devuelve una cadena vacía ('').
  * @param name El nombre del campo a validar.
  * @param value El valor actual del campo.
+ * @param isEditing Indica si el formulario está en modo edición.
+ * @param originalCedula La cédula original del registro (solo en modo edición).
  * @returns El mensaje de error o una cadena vacía si es válido.
  */
-export const validarRegistro = async (name: keyof ValidationErrors, value: string | number | any): Promise<string> => {
-let errorMsg: string = '';
+export const validarRegistro = async (
+    name: keyof ValidationErrors,
+    value: string | number | any,
+    isEditing: boolean = false, // <- NUEVO: Agregar parámetro con valor por defecto
+    originalCedula: number | null = null // <- NUEVO: Cédula original
+): Promise<string> => {
+    let errorMsg: string = '';
     const strValue = String(value || '').trim();
 
     switch (name) {
@@ -68,50 +75,35 @@ let errorMsg: string = '';
             // 1. Validación SÍNCRONA (Formato y Longitud)
             if (!Number(value) || strValue.length < 7) {
                 errorMsg = 'Debe ser un número y tener al menos 7 dígitos.';
-                // Si hay error síncrono, salimos del case
-                break; 
+                break;
             }
 
-            // 2. Validación ASÍNCRONA (Duplicidad) - SOLO se ejecuta si no hay errorMsg
-            if (errorMsg === '') {
-                try {
-                    const existe = await validarCedula(value as number)
-                    if (existe) {
-                        // Si existe, se establece el error de duplicidad
-                        errorMsg = `La persona con cedula ${value} ya está resgitrada`;
-                    }
-                } catch (error) {
-                    // Manejo de error de conexión/API
-                    // Si la API falla, es mejor dejar un mensaje de error claro
-                    console.error("Error al verificar duplicidad de cédula:", error);
-                    // errorMsg = 'Error de sistema al verificar cédula. Intente nuevamente.';
+            // Si la cédula es numéricamente válida...
+
+            // Lógica de Edición: Si es modo edición Y la cédula no ha cambiado, no verificar duplicidad.
+            if (isEditing && originalCedula === Number(value)) {
+                // No hay error. Salir del case 'cedula'.
+                
+                break;
+            }
+
+            // Lógica de Creación o Cédula Modificada en Edición:
+            try {
+                const existe = await validarCedula(value as number)
+                if (existe && !isEditing) {
+                    errorMsg = `La persona con cedula ${value} ya está registrada`;
                 }
+            } catch (error) {
+                // Si la API falla al verificar (ej. 500), puedes establecer un error de conexión
+                console.error("Error al verificar duplicidad de cédula:", error);
+                // errorMsg = 'Error de conexión al verificar cédula. Intente de nuevo.';
             }
             break;
 
-        case ('municipioId'):
-        // case ('departamentoId'):
-        //     // Para Selects/IDs, aseguramos que se haya seleccionado un valor numérico > 0
-        //     if (!Number(value) || value === 0) {
-        //         errorMsg = 'Debe seleccionar un valor.';
-        //     }
-        //     break;
-
-        // case ('liderCedula'):
-        // case ('mesaVotacion'):
-        //     if (!Number(value)) {
-        //         errorMsg = 'Debe ser un valor numérico.';
-        //     }
-        //     break;
+        // ... (Resto de tu lógica de validación)
 
         case ('nombres'):
         case ('apellidos'):
-/*         case ('lugarVotacion'): */
-        // case ('direccion'):
-/*         case ('comunaBarrio'):
-            case ('observacion'):
-            Tu lógica requiere que se permitan espacios internos (ej: 'Eduar Samir'),
-            por lo que solo verificamos que no esté vacío después de .trim(). */
             if (!strValue) {
                 errorMsg = 'Este campo es obligatorio.';
             }
@@ -123,13 +115,6 @@ let errorMsg: string = '';
             }
             break;
 
-/*         case ('correoElectronico'):
-            // Validación básica: debe contener '@' y '.' y no estar vacío.
-            if (!strValue || !(strValue.includes('@') && strValue.includes('.'))) {
-                errorMsg = 'Ingrese un formato de correo válido (ej: usuario@dominio.com).';
-            }
-            break;
- */
         default:
             break;
     }
