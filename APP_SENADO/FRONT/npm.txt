@@ -7,3 +7,4 @@ npm i --save-dev @types/papaparse
 // npm i papaparse xlsx react-dropzone
 npx localtunnel --port 5173
 npm install -g localtunnel
+npm install -D @vitejs/plugin-basic-ssl
