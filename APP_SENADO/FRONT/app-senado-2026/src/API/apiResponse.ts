@@ -136,9 +136,31 @@ export async function createRegistroVotacion(data: RegistroVotacion): Promise<Re
         const response = await axios.post(API_REG_VOTACION_ENDPOINT, data);
         return response.data;
     } catch (error) {
-        handleAxiosError(error, 'Crear RegistroVotacion de Comisión');
+        handleAxiosError(error, 'Crear RegistroVotacion');
     }
 }
+// 4. ACTUALIZAR
+export async function updateRegistroVotacion(cedula: number, data: Partial<RegistroVotacion>): Promise<RegistroVotacion> {
+    try {
+        // Asumiendo que tu API recibe PUT o PATCH en /:cedula
+        const response = await axios.patch(`${API_REG_VOTACION_ENDPOINT}/${cedula}`, data); // O axios.put dependiendo de tu backend
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error, 'Actualizar RegistroVotacion');
+        throw error;
+    }
+}
+
+// 5. ELIMINAR
+export async function deleteRegistroVotacion(cedula: number): Promise<void> {
+    try {
+        await axios.delete(`${API_REG_VOTACION_ENDPOINT}/${cedula}`);
+    } catch (error) {
+        handleAxiosError(error, 'Eliminar RegistroVotacion');
+        throw error;
+    }
+}
+/* ------------------------------------------------------------------------------------------------------------- */
 /**
  * Realiza una petición POST al endpoint de inserción masiva.
  * * @param data Array de objetos (registros) a migrar.
@@ -163,7 +185,7 @@ export async function bulkInsertRegistroVotacion(
 
         return response.data;
     } catch (error) {
-        handleAxiosError(error, 'Migración Masiva de Funcionarios');
+        handleAxiosError(error, 'Migración Masiva de Registros');
         // `handleAxiosError` siempre lanza, por lo que esta línea es redundante pero requerida por TS.
         throw error;
     }
@@ -185,7 +207,7 @@ function handleAxiosError(error: unknown, context: string): never {
 /* Ciudades */
 export async function getAllCiudades(): Promise<Ciudad[]> {
     try {
-        const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://${BASE_URL_SERVER_API}:3000/api/v1/ciudades`);
+        const responseCiu: AxiosResponse<Ciudad[]> = await axios.get(`http://${BASE_URL_SERVER_API}:${PORT}/api/v1/ciudades`);
         return responseCiu.data;
     } catch (error) {
         console.error("Error al obtener ciudades:", error);
@@ -198,7 +220,7 @@ export async function getAllCiudades(): Promise<Ciudad[]> {
 /* Departamentos */
 export async function getAllDepartamentos(): Promise<Departamento[]> {
     try {
-        const responseDep: AxiosResponse<Departamento[]> = await axios.get(`http://${BASE_URL_SERVER_API}:3000/api/v1/departamentos`);
+        const responseDep: AxiosResponse<Departamento[]> = await axios.get(`http://${BASE_URL_SERVER_API}:${PORT}/api/v1/departamentos`);
         return responseDep.data;
     } catch (error) {
         console.error("Error al obtener departamentos:", error);

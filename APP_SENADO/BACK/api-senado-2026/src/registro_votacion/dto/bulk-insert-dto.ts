@@ -1,6 +1,6 @@
 
 import { Type } from 'class-transformer';
-import { ValidateNested, IsArray, IsNotEmpty, IsNumber, IsString, IsOptional, IsDateString, IsDate } from 'class-validator';
+import { ValidateNested, IsArray, IsNotEmpty, IsNumber, IsString, IsOptional, IsDateString, IsDate, IsBoolean } from 'class-validator';
 
 
 /**
@@ -9,7 +9,7 @@ import { ValidateNested, IsArray, IsNotEmpty, IsNumber, IsString, IsOptional, Is
 export class RegistroVotacionRecordDto {
 
     @IsNotEmpty()
-    @IsNumber() 
+    @IsNumber()
     cedula: number;
 
     @IsOptional()
@@ -42,6 +42,10 @@ export class RegistroVotacionRecordDto {
     municipioId?: number
 
     @IsOptional()
+    @IsNumber()
+    departamentoId?: number
+
+    @IsOptional()
     @IsString()
     direccion?: string
 
@@ -60,6 +64,18 @@ export class RegistroVotacionRecordDto {
     @IsOptional()
     @IsString()
     observacion?: string
+
+    @IsOptional()
+    @IsString()
+    municipioDepartamento?: string
+
+    @IsOptional()
+    @IsString()
+    liderNombres?: string
+
+    @IsOptional()
+    @IsBoolean()
+    revisado_verificado?: boolean
 
 }
 

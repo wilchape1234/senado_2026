@@ -8,3 +8,11 @@ npm i --save-dev @types/papaparse
 npx localtunnel --port 5173
 npm install -g localtunnel
 npm install -D @vitejs/plugin-basic-ssl
+
+npm install react-bootstrap-table-next react-bootstrap-table2-paginator react-bootstrap bootstrap
+
+npm install --save-dev @types/react-bootstrap-table-next @types/react-bootstrap-table2-paginator
+
+
+npm i react-bootstrap
+npm install @tanstack/react-table

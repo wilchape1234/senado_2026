@@ -11,9 +11,9 @@ export default defineConfig({
       },
     }),
     basicSsl({
-            name: 'test',
+            // name: 'test',
       /** custom trust domains */
-      domains: ['*.custom.com'],
+      // domains: ['*.custom.com'],
     }),
   ],
   server: {
