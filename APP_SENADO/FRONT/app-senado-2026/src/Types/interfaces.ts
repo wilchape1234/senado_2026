@@ -96,4 +96,5 @@ export const liderNulo: Lider = {
   direccion: '',
   mesaVotacion: 0,
   lugarVotacion: '', 
+  
 }
