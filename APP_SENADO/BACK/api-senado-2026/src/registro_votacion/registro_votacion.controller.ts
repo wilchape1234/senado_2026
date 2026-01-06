@@ -68,19 +68,32 @@ export class RegistroVotacionController {
   findAll(@Query() query: FindAllQueryDto) {
     return this.registroVotacionService.findAllPaginated(query);
   }
-
-  @Get(':Cedula')
-  findOne(@Param('Cedula') cedula: string) {
-    return this.registroVotacionService.findOne(+cedula);
+  @Get('all')
+  findAllRecords() {
+    return this.registroVotacionService.findAll();
   }
 
-  @Patch(':Cedula')
-  update(@Param('Cedula') cedula: string, @Body() updateRegistroVotacionDto: UpdateRegistroVotacionDto) {
+  @Get(':cedula')
+  findOne(@Param('cedula') cedula: string) {
+    return this.registroVotacionService.findOne(+cedula);
+  }
+  @Get(':departamentoId')
+  findByDepartamento(@Param('departamentoId') departamentoId: string) {
+    return this.registroVotacionService.findOne(+departamentoId);
+  }
+
+  @Get(':municipioId')
+  findByCiudadMunicipio(@Param('municipioId') municipioId: string) {
+    return this.registroVotacionService.findOne(+municipioId);
+  }
+
+  @Patch(':cedula')
+  update(@Param('cedula') cedula: string, @Body() updateRegistroVotacionDto: UpdateRegistroVotacionDto) {
     return this.registroVotacionService.update(+cedula, updateRegistroVotacionDto);
   }
 
-  @Delete(':Cedula')
-  remove(@Param('Cedula') cedula: string) {
+  @Delete(':cedula')
+  remove(@Param('cedula') cedula: string) {
     return this.registroVotacionService.remove(+cedula);
   }
 }

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { BrowserRouter, Link, Navigate, Outlet, Route, Routes, useNavigate } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
 
-import { AllRegistroVotacion } from "./Pages/RegistroVotacion/Index";
+
 import { CrearRegistroVotacionMasivo } from "./Pages/RegistroVotacion/Create/CrearMasivo";
 import { CrearRegistroVotacion } from "./Pages/RegistroVotacion/Create/Crear";
 import { IconMenu2 } from "@tabler/icons-react";
 import { Incio } from "./Pages";
+import { AllRegistroVotacion } from "./Pages/RegistroVotacion/index2";
 
 
 function App() {

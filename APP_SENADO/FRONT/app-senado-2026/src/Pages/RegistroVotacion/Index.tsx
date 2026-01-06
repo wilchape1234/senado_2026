@@ -9,7 +9,7 @@ import { fetchRegistroVotacionPaginated, getAllCiudades, getAllDepartamentos } f
 
 
 
-function AllRegistroVotacion() {
+function AllRegistroVotacionOLD() {
     // El estado ahora usa el tipo enriquecido
     const [data, setData] = useState<RegistroVotacion[]>([])
 
@@ -109,4 +109,4 @@ function AllRegistroVotacion() {
     </>)
 }
 
-export { AllRegistroVotacion }
+export { AllRegistroVotacionOLD }
