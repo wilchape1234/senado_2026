@@ -35,6 +35,7 @@ const initialRegistro: RegistroVotacion = {
     mesaVotacion: 0,
     lugarVotacion: '',
     municipioId: 0,
+    departamentoId: 0,
     direccion: '',
     comunaBarrio: '',
     liderCedula: 0,
@@ -104,7 +105,7 @@ export function AllRegistroVotacion() {
             }
         };
         fetchData();
-    }, [pagination.pageIndex, pagination.pageSize, searchQuery,reloadTrigger]);
+    }, [pagination.pageIndex, pagination.pageSize, searchQuery, reloadTrigger]);
 
 
     // --- HELPERS VISUALES PARA LA TABLA ---
@@ -154,6 +155,7 @@ export function AllRegistroVotacion() {
             if (deptoId) {
                 setSelectedDepartamentoId(deptoId);
                 setCiudadPorDepartamento(dataCiudades.filter(c => c.departmentId === deptoId));
+                setCurrentRecord(prev => ({ ...prev, departamentoId: deptoId }))
             } else {
                 setSelectedDepartamentoId('');
                 setCiudadPorDepartamento([]);
@@ -320,6 +322,16 @@ export function AllRegistroVotacion() {
             ),
         }),
     ], [dataCiudades, dataDepartamentos]);
+
+
+    useEffect(() => {
+        if (currentRecord.departamentoId && currentRecord.municipioId) {
+
+            const ciudadDepartamento = (dataDepartamentos.find(p => p.id == currentRecord.departamentoId))?.name + " - " + (ciudadPorDepartamento.find(p => p.id == currentRecord.municipioId))?.name
+
+            setCurrentRecord(prev => ({ ...prev, municipioDepartamento: ciudadDepartamento }))
+        }
+    }, [setCurrentRecord, currentRecord.departamentoId, currentRecord.municipioId])
 
     const table = useReactTable({
         data,
@@ -574,6 +586,9 @@ export function AllRegistroVotacion() {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
                     <Button variant="primary" onClick={handleSave}>{isEditing ? 'Actualizar' : 'Guardar'}</Button>
+                    <pre className={"bg-black text-white " + 'd-block'}>
+                        {JSON.stringify(currentRecord, null, 2)}
+                    </pre>
                 </Modal.Footer>
             </Modal>
         </div>
