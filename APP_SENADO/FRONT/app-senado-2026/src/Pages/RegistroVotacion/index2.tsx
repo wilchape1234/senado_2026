@@ -158,7 +158,7 @@ export function AllRegistroVotacion() {
                 setCurrentRecord(prev => ({ ...prev, departamentoId: deptoId }))
             } else {
                 setSelectedDepartamentoId('');
-                setCiudadPorDepartamento([]);
+                setCiudadPorDepartamento([]); 
             }
             // Resetear municipio seleccionado
             setCurrentRecord(prev => ({ ...prev, municipioId: null }));
