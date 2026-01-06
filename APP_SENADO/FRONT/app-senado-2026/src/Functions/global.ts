@@ -83,7 +83,7 @@ export const validarRegistro = async (
             // Lógica de Edición: Si es modo edición Y la cédula no ha cambiado, no verificar duplicidad.
             if (isEditing && originalCedula === Number(value)) {
                 // No hay error. Salir del case 'cedula'.
-                
+
                 break;
             }
 
@@ -102,6 +102,18 @@ export const validarRegistro = async (
 
         // ... (Resto de tu lógica de validación)
 
+        case ('departamentoId'):
+            if (!Number(value)) {
+                errorMsg = 'Seleccione por favor el departamento.';
+            }
+
+            break;
+        case ('municipioId'):
+            if (!Number(value)) {
+                errorMsg = 'Seleccione por favor el Municipio o Ciudad.';
+            }
+
+            break;
         case ('nombres'):
         case ('apellidos'):
             if (!strValue) {

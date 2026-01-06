@@ -98,6 +98,10 @@ function CrearRegistroVotacion() {
             if (departamentoIdSeleccionado) {
                 setSelectedDepartamentoId(departamentoIdSeleccionado);
                 setCiudadPorDepartamento(ciudades.filter(c => c.departmentId === departamentoIdSeleccionado));
+
+
+
+                setRegistroVotacion(prev => ({ ...prev, departamentoId: departamentoIdSeleccionado }))
             } else {
                 setSelectedDepartamentoId('');
                 setCiudadPorDepartamento([]);
@@ -186,7 +190,14 @@ function CrearRegistroVotacion() {
 
 
 
+    useEffect(() => {
+        if (registroVotacion.departamentoId && registroVotacion.municipioId) {
 
+            const ciudadDepartamento = (departamentos.find(p => p.id == registroVotacion.departamentoId))?.name + " - " + (ciudadPorDepartamento.find(p => p.id == registroVotacion.municipioId))?.name
+
+            setRegistroVotacion(prev => ({ ...prev, municipioDepartamento: ciudadDepartamento }))
+        }
+    }, [setRegistroVotacion, registroVotacion.departamentoId, registroVotacion.municipioId])
 
 
     if (loading) return (
@@ -212,18 +223,18 @@ function CrearRegistroVotacion() {
                         {/* Nota: También eliminé la clase `w-100` y el `flex-grow-1` redundantes */}
 
                     </div>
-                        {/* 2. Contenedor de la Imagen: col-12 en móvil, más pequeño en desktop */}
-                        {/* Nota: También eliminé la clase `w-100` y el `flex-grow-1` redundantes */}
-                        <div className="d-flex justify-content-center justify-content-lg-end col-12 col-lg-4" style={{/*  height: '180px', maxHeight: '200px' */ }}>
-                            <img
-                                src={gisselaImage}
-                                alt="Gisella"
-                                className="rounded-2 img-fluid"
-                                style={{ /* maxWidth: '100%', */ margin: '1rem' }}
+                    {/* 2. Contenedor de la Imagen: col-12 en móvil, más pequeño en desktop */}
+                    {/* Nota: También eliminé la clase `w-100` y el `flex-grow-1` redundantes */}
+                    <div className="d-flex justify-content-center justify-content-lg-end col-12 col-lg-4" style={{/*  height: '180px', maxHeight: '200px' */ }}>
+                        <img
+                            src={gisselaImage}
+                            alt="Gisella"
+                            className="rounded-2 img-fluid"
+                            style={{ /* maxWidth: '100%', */ margin: '1rem' }}
 
 
-                            />
-                        </div>
+                        />
+                    </div>
 
                 </div>
 
@@ -460,7 +471,7 @@ function CrearRegistroVotacion() {
                             >
                                 Guardar Registro
                             </button>
-                            <pre className={"bg-black text-white " + 'd-none'}>
+                            <pre className={"bg-black text-white " + 'd-block'}>
                                 {JSON.stringify(registroVotacion, null, 2)}
                             </pre>
                         </div>
