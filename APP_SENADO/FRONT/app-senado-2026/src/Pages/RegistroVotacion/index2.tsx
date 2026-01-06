@@ -36,7 +36,6 @@ const initialRegistro: RegistroVotacion = {
     lugarVotacion: '',
     departamentoId:0,
     municipioId: 0,
-    departamentoId: 0,
     direccion: '',
     comunaBarrio: '',
     liderCedula: 0,
