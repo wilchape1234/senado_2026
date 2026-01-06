@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Link, Navigate, Outlet, Route, Routes, useNavigate } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
+import { BrowserRouter, Link, Navigate, Outlet, Route, Routes, } from "react-router"; // Nota: react-router-dom es lo estándar, verifica si usas "react-router" directo
 
 
 import { CrearRegistroVotacionMasivo } from "./Pages/RegistroVotacion/Create/CrearMasivo";
@@ -45,7 +45,7 @@ function App() {
 const customBlue900 = '#1e3a8a';
 
 function RenderApp() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // Estado para controlar la visibilidad del menú lateral (Offcanvas) en móvil
   const [sidebarVisible, setSidebarVisible] = useState(false);
 

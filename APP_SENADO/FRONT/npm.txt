@@ -16,3 +16,5 @@ npm install --save-dev @types/react-bootstrap-table-next @types/react-bootstrap-
 
 npm i react-bootstrap
 npm install @tanstack/react-table
+
+npm i
