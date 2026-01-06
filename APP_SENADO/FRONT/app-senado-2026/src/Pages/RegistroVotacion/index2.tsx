@@ -165,7 +165,6 @@ export function AllRegistroVotacion() {
             return;
         }
 
-
         // 3. Actualizar estado del registro
         setCurrentRecord(prev => {
             if (name === 'nombres' || name === 'apellidos') {
