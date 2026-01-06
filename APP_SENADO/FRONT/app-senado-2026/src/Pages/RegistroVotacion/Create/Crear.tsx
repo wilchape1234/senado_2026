@@ -471,7 +471,7 @@ function CrearRegistroVotacion() {
                             >
                                 Guardar Registro
                             </button>
-                            <pre className={"bg-black text-white " + 'd-block'}>
+                            <pre className={"bg-black text-white " + 'd-none'}>
                                 {JSON.stringify(registroVotacion, null, 2)}
                             </pre>
                         </div>

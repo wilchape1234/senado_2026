@@ -585,7 +585,7 @@ export function AllRegistroVotacion() {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
                     <Button variant="primary" onClick={handleSave}>{isEditing ? 'Actualizar' : 'Guardar'}</Button>
-                    <pre className={"bg-black text-white " + 'd-block'}>
+                    <pre className={"bg-black text-white " + 'd-none'}>
                         {JSON.stringify(currentRecord, null, 2)}
                     </pre>
                 </Modal.Footer>
