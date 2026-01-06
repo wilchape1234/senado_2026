@@ -9,9 +9,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CiudadesModule } from './ciudades/ciudades.module';
 import { DepartamentosModule } from './departamentos/departamentos.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
- // <-- Importar ConfigModule y ConfigService
+import { UserModule } from './user/user.module';
+import { JuradoModule } from './jurado/jurado.module';
+import { Jurado } from './jurado/entities/jurado.entity';
+import { User } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { Auth } from './auth/entities/auth.entity';
+// <-- Importar ConfigModule y ConfigService
 
-const enties = [RegistroVotacion, Lider];
+const enties = [RegistroVotacion, Lider, Jurado, User, Auth];
 
 @Module({
   imports: [
@@ -30,27 +36,31 @@ const enties = [RegistroVotacion, Lider];
         return {
           type: 'mysql',
           host: configService.get<string>('DB_HOST'),
-          port: isDevelopment 
-                ? configService.get<number>('DB_PORT_DEV') 
-                : configService.get<number>('DB_PORT_PROD'),
+          port: isDevelopment
+            ? configService.get<number>('DB_PORT_DEV')
+            : configService.get<number>('DB_PORT_PROD'),
           username: configService.get<string>('DB_USERNAME'),
-          password: isDevelopment 
-                ? configService.get<string>('DB_PASSWORD_DEV') 
-                : configService.get<string>('DB_PASSWORD_PROD'),
-          database: isDevelopment 
-                ? configService.get<string>('DB_DATABASE_DEV') 
-                : configService.get<string>('DB_DATABASE_PROD'),
+          password: isDevelopment
+            ? configService.get<string>('DB_PASSWORD_DEV')
+            : configService.get<string>('DB_PASSWORD_PROD'),
+          database: isDevelopment
+            ? configService.get<string>('DB_DATABASE_DEV')
+            : configService.get<string>('DB_DATABASE_PROD'),
           entities: enties,
           synchronize: true,
+          extra: {
+            connectionLimit: 10,
+            dateStrings: true, 
+          },
         };
       },
       inject: [ConfigService], // Asegura que ConfigService sea inyectado
-    }), 
-    
-    RegistroVotacionModule, 
-    LiderModule, 
-    CiudadesModule, 
-    DepartamentosModule
+    }),
+
+    RegistroVotacionModule,
+    LiderModule,
+    CiudadesModule,
+    DepartamentosModule, UserModule, JuradoModule, AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

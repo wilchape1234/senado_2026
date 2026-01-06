@@ -5,8 +5,8 @@ import { Lider } from './entities/lider.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Lider])],
+  imports: [TypeOrmModule.forFeature([Lider])],
   controllers: [LiderController],
   providers: [LiderService],
 })
-export class LiderModule {}
+export class LiderModule { }

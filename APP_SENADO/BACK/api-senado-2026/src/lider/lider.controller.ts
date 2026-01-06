@@ -3,7 +3,7 @@ import { LiderService } from './lider.service';
 import { CreateLiderDto } from './dto/create-lider.dto';
 import { UpdateLiderDto } from './dto/update-lider.dto';
 
-@Controller('lider')
+@Controller('api/v1/lider')
 export class LiderController {
   constructor(private readonly liderService: LiderService) {}
 
@@ -17,18 +17,18 @@ export class LiderController {
     return this.liderService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.liderService.findOne(+id);
+  @Get(':cedula')
+  findOne(@Param('cedula') cedula: string) {
+    return this.liderService.findOne(+cedula);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLiderDto: UpdateLiderDto) {
-    return this.liderService.update(+id, updateLiderDto);
+  @Patch(':cedula')
+  update(@Param('cedula') cedula: string, @Body() updateLiderDto: UpdateLiderDto) {
+    return this.liderService.update(+cedula, updateLiderDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.liderService.remove(+id);
+  @Delete(':cedula')
+  remove(@Param('cedula') cedula: string) {
+    return this.liderService.remove(+cedula);
   }
 }

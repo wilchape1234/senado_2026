@@ -1,4 +1,7 @@
+import { fechaHoy } from "src/utils/consts/global";
 import { Column, Entity, PrimaryColumn } from "typeorm";
+
+
 
 @Entity('registro_votacion')
 export class RegistroVotacion {
@@ -52,13 +55,22 @@ export class RegistroVotacion {
     @Column({ type: 'text', name: 'lider_nombres', nullable: true })
     liderNombres: string | null;
 
-    @Column({ type: 'datetime', name: 'fecha_registro', nullable: true })
+    @Column({ type: 'timestamp', name: 'fecha_registro', nullable: true, default: () => 'CURRENT_TIMESTAMP' })
     fechaRegistro: Date | null;
 
     @Column({ type: 'text', name: 'observacion', nullable: true })
     observacion: string | null;
 
     @Column({ type: 'boolean', name: 'revisado_verificado', nullable: true })
-    revisado_verificado: boolean | null;
+    revisadoVerificado: boolean | null;
+
+    @Column({ type: 'boolean', name: 'testigo', nullable: true, default: false })
+    testigo: boolean | null;
+
+    @Column({ type: 'boolean', name: 'jurado', nullable: true, default: false })
+    jurado: boolean | null;
+
+    @Column({ type: 'boolean', name: 'lider', nullable: true, default: false })
+    lider: boolean | null;
 
 }
