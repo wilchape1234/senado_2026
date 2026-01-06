@@ -21,7 +21,7 @@ import {
 
 // --- IMPORTACIONES DE UTILIDADES (Asegúrate que la ruta sea correcta) ---
 // Estas vienen de tu componente CrearAdmin, ajusta la ruta si es necesario
-import { initialValidationErrors, validarCedula, validarRegistro, type ValidationErrors } from "../../Functions/global";
+import { initialValidationErrors,  validarRegistro, type ValidationErrors } from "../../Functions/global";
 import { toPascalCase } from "../../Functions/formatters";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 
@@ -34,8 +34,8 @@ const initialRegistro: RegistroVotacion = {
     numeroCelular: '',
     mesaVotacion: 0,
     lugarVotacion: '',
+    departamentoId:0,
     municipioId: 0,
-    departamentoId: 0,
     direccion: '',
     comunaBarrio: '',
     liderCedula: 0,
