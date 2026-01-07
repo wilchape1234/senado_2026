@@ -22,7 +22,7 @@ const setAuthHeader = (token: string | null) => {
 };
 
 const PORT = 3000;
-const API_AUTH_ENDPOINT = `http://localhost:${PORT}/api/v1/auth/login`;
+const API_AUTH_ENDPOINT = `http://${window.location.hostname}:${PORT}/api/v1/auth/login`;
 
 // Función para obtener los datos del usuario del payload del JWT
 const getAuthUserFromToken = (token: string): AuthUser | null => {
