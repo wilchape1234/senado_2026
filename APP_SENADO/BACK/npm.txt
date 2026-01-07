@@ -1,1 +1,14 @@
 npm i axios
+nest generate resource lider
+nest generate resource jurado
+nest generate resource user
+nest generate resource auth
+
+npm install --save @nestjs/jwt
+npm install bcrypt
+npm install @nestjs/passport passport passport-jwt
+npm install -D @types/passport-jwt
+npm i -D @types/bcrypt bcrypt
+
+npm install @nestjs/passport passport passport-jwt
+npm install -D @types/passport-jwt

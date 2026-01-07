@@ -13,7 +13,7 @@ import { JwtStrategy } from './jwt.strategy'; // <--- Importar estrategia
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '2h' }, // ¡Recomendado usar más de 60s!
+      signOptions: { expiresIn: '2m' }, // ¡Recomendado usar más de 60s!
     }),
   ],
   providers: [AuthService, JwtStrategy], // <--- ¡Añadir JwtStrategy aquí!

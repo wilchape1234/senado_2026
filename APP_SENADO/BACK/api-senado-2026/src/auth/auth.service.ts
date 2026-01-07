@@ -1,3 +1,5 @@
+import { User } from './../user/entities/user.entity';
+import { PartialType } from '@nestjs/mapped-types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -12,11 +14,11 @@ export class AuthService {
   ) { }
 
   async signIn(
-    username: string,
+    userName: string,
     pass: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ access_token: string, u?: Partial<User> }> {
     // Busca el usuario (esto lanzará NotFoundException si no existe, según tu user.service.ts)
-    const user = await this.usersService.findByUsername(username);
+    const user = await this.usersService.findByUsername(userName);
 
     // 2. Comparar la contraseña plana (pass) con el hash de la DB (user.password)
     const isMatch = await bcrypt.compare(pass, user.password);
@@ -27,14 +29,17 @@ export class AuthService {
     }
 
     // 4. Si coinciden, generar el token
-    const payload:PayloadUser = {
+    const payload: PayloadUser = {
       UID: user.userId,
       userName: user.userName,
       // 💡 AÑADIR EL ROL AL PAYLOAD DEL TOKEN
       rolId: user.rolId
     };
+
+    const { password, ...rest } = user
     return {
       access_token: await this.jwtService.signAsync(payload),
+      // u: rest
     };
   }
 }

@@ -18,3 +18,7 @@ npm i react-bootstrap
 npm install @tanstack/react-table
 
 npm i
+
+npm i jwt-decode
+npm i --save-dev @types/jwt-decode
+npm i --save-dev @types/jwt-decode jwt-decode
