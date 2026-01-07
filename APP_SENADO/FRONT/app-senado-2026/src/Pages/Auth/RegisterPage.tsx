@@ -7,7 +7,7 @@ import { Link,  useNavigate } from 'react-router';
 
 // Importar la interfaz
 
-let host = window.location.hostname.includes('localhost') ? '192.168.18.18' : window.location.hostname
+let host = window.location.hostname.includes('localhost') ? 'localhost' : window.location.hostname
 const RegisterPage = () => {
     // Usar la interfaz para tipar el estado
     const [formData, setFormData] = useState<AuthFormState>({
