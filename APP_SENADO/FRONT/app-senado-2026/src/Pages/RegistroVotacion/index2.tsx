@@ -419,7 +419,7 @@ export function AllRegistroVotacion() {
 
     return (
         <div className="container-fluid mt-5">
-            <h2 className="mb-4">Gestión de Votantes</h2>
+            <h2 className="m-4">Gestión de Votantes</h2>
 
             {/* Barra superior */}
             <Row className="mb-3 align-items-center mx-4">
@@ -672,7 +672,7 @@ export function AllRegistroVotacion() {
                             <input
                                 onChange={handleChangeInputValue}
                                 value={currentRecord.liderCedula || ''}
-                                type="number" className={`form-control ${validationErrors.liderCedula ? 'is-invalid' : ''}`} name='liderCedula' />
+                                type="text" className={`form-control ${validationErrors.liderCedula ? 'is-invalid' : ''}`} name='liderCedula' />
                             {validationErrors.liderCedula && <div className="invalid-feedback">{validationErrors.liderCedula}</div>}
                         </div>
                         <div className="col-md-6">

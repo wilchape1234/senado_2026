@@ -13,13 +13,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { AuthProvider } from './context/AuthProvider.tsx';
 import React from 'react';
 // import App from './App.tsx';
-import { App2 } from './App2.tsx';
+
+import { App } from './App.tsx';
 
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
-      <App2 />
+      <App />
     </AuthProvider>
   </React.StrictMode>,
 )
