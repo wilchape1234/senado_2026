@@ -7,6 +7,9 @@ import { CrearRegistroVotacion } from "./Pages/RegistroVotacion/Create/Crear";
 import { IconMenu2 } from "@tabler/icons-react";
 import { Incio } from "./Pages";
 import { AllRegistroVotacion } from "./Pages/RegistroVotacion/index2";
+import LoginPage from "./Pages/Auth/LoginPage";
+import RegisterPage from "./Pages/Auth/RegisterPage";
+import { customBlue900 } from "./Functions/global";
 
 
 function App() {
@@ -14,35 +17,62 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RenderApp />}>
-        <Route 
-            index 
-            element={<Navigate to="inicio" replace />} 
+          <Route
+            index
+            element={<Navigate to="inicio" replace />}
           />
           {/* <Route path="registro-votacion" element={<Default />}> */}
           <Route path="registro-votacion" element={<Default />}>
             {/* <Route path="crear" element={<Default />} /> */}
-            <Route path="crear" element={<CrearRegistroVotacion />} />
-            <Route path="crear-masivos" element={<CrearRegistroVotacionMasivo />} />
-            <Route path="actualizar" element={<Default />} />
-            <Route path="eliminar" element={<Default />} />
-            <Route path="ver" element={<AllRegistroVotacion />} />
-            <Route path="ver/:codigo" element={<Default />} />
+            <Route path="crear" element={<CrearRegistroVotacion />} />{/* Todos pueden acceder hasta los que no tienen usuario */}
+            <Route path="crear-masivos" element={<CrearRegistroVotacionMasivo />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="actualizar" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="eliminar" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="ver" element={<AllRegistroVotacion />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="ver/:codigo" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
           </Route>
-          <Route path="inicio" element={<Incio />} />
-          <Route path="login" element={<Default />} />
-          <Route path="lideres" element={<Default />}>
-            <Route path="crear" element={<Default />} />
-            <Route path="editar" element={<Default />} />
-            <Route path="editar/:cedula" element={<Default />} />
+          <Route path="inicio" element={<Incio />} />{/* Todos pueden acceder hasta los que no tienen usuario */}
+          {/* RolId = 1 */}
+          <Route path="super-admin" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 1 (Super-Admin)  */}
+            <Route path="dashboard"/>
           </Route>
-          <Route path="migracion" element={<Default />} />
+          {/* RolId = 2 */}
+          <Route path="admin" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 2 (Admin)  */}
+            <Route path="dashboard"/>
+          </Route>
+          {/* RolId = 3 */}
+          <Route path="supervisor" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 3 (Supervisor)  */}
+            <Route path="dashboard"/>
+          </Route>
+          {/* RolId = 4 */}
+          <Route path="normal" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 4 (Normal)  */}
+            <Route path="dashboard"/>
+          </Route>
+          <Route path="login" element={<LoginPage />} />{/* Todos pueden acceder hasta los que no tienen usuario */}
+          <Route path="register" element={<RegisterPage />} />{/* Todos pueden acceder hasta los que no tienen usuario */}
+          <Route path="lideres" element={<Default />}>{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="crear" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="editar" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="editar/:cedula" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+          </Route>
+          <Route path="jurados" element={<Default />}>{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="crear" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="editar" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="editar/:cedula" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+          </Route>
+          <Route path="Testigos" element={<Default />}>{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="crear" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="editar" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+            <Route path="editar/:cedula" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
+          </Route>
+          <Route path="migracion" element={<Default />} />{/* Solo pueden acceder los Usuarios de RolId 1 y 2 (Super-Admin, Admin )  */}
         </Route>
       </Routes>
     </BrowserRouter>
   );
 }
 
-const customBlue900 = '#1e3a8a';
+
 
 function RenderApp() {
   // const navigate = useNavigate();
@@ -57,7 +87,8 @@ function RenderApp() {
     // { name: 'Ver Votantes', path: '/registro-votacion/ver', icon: 'pi pi-calendar-plus' },
     // { name: 'Lideres', path: 'lideres', icon: 'pi pi-users' },
     // { name: 'Migración', path: 'migracion', icon: 'pi pi-upload' },
-    // { name: 'Login', path: 'login', icon: 'pi pi-sign-in' },
+    { name: 'Login', path: 'login', icon: 'pi pi-sign-in' },
+    { name: 'register', path: 'register', icon: 'pi pi-sign-in' },
   ];
 
   // Función para manejar la navegación desde el menú móvil
@@ -104,10 +135,10 @@ function RenderApp() {
             onClick={() => setSidebarVisible(true)}
             aria-label="Abrir Menú"
           >
-            
+
             <span className="pi pi-bars fs-4">
               <IconMenu2></IconMenu2>
-              
+
             </span>
           </button>
         </div>
@@ -200,3 +231,4 @@ function Default() {
     </div>
   );
 }
+

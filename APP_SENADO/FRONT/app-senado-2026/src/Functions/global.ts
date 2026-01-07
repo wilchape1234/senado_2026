@@ -133,3 +133,7 @@ export const validarRegistro = async (
 
     return errorMsg;
 };
+
+const customBlue900 = '#1e3a8a';
+
+export { customBlue900 }
