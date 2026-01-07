@@ -17,4 +17,7 @@ export class CreateRegistroVotacionDto {
     fechaRegistro: Date | null;
     observacion: string | null;
     revisadoVerificado: boolean | null;
+    testigo: boolean | null;
+    jurado: boolean | null;
+    lider: boolean | null;
 }

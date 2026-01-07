@@ -6,7 +6,7 @@ import {
     createColumnHelper,
     type PaginationState,
 } from "@tanstack/react-table";
-import { Modal, Button, Form, Row, Col, InputGroup, Table, Pagination } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col, InputGroup, Table, Pagination, Toast, ToastContainer } from "react-bootstrap";
 
 // --- IMPORTACIONES DE TIPOS Y API ---
 import type { Ciudad, Departamento, RegistroVotacion } from "../../Types/interfaces";
@@ -25,6 +25,7 @@ import { initialValidationErrors, validarRegistro, type ValidationErrors } from 
 import { toPascalCase } from "../../Functions/formatters";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useAuth } from "../../context/AuthProvider";
+import { isDebugPayloadJSONRV } from "../../Functions/Variables";
 
 // Objeto vacío para inicializar formulario
 const initialRegistro: RegistroVotacion = {
@@ -42,11 +43,15 @@ const initialRegistro: RegistroVotacion = {
     liderCedula: 0,
     fechaRegistro: new Date(),
     observacion: '',
+    revisadoVerificado: false,
+    testigo: false,
+    jurado: false,
+    lider: false,
 };
 
 export function AllRegistroVotacion() {
 
-    const { user, logout } = useAuth(); //
+    const { user, } = useAuth(); //
     // --- ESTADOS DE DATOS ---
     const [data, setData] = useState<RegistroVotacion[]>([]);
     const [dataCiudades, setDataCiudades] = useState<Ciudad[]>([]);
@@ -63,6 +68,20 @@ export function AllRegistroVotacion() {
         pageSize: 10,
     });
     const [rowCount, setRowCount] = useState(0);
+    // --- ESTADOS DE MENSAJES POST-ACCIONES ---
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastVariant, setToastVariant] = useState<'success' | 'danger' | 'warning' | 'info'>('info');
+
+    const showToastMessage = (
+        message: string,
+        variant: 'success' | 'danger' | 'warning' | 'info' = 'info'
+    ) => {
+        setToastMessage(message);
+        setToastVariant(variant);
+        setShowToast(true);
+    };
+
 
     // --- ESTADOS DE FILTRO Y CARGA ---
     const [searchQuery, setSearchQuery] = useState("");
@@ -126,49 +145,63 @@ export function AllRegistroVotacion() {
     };
 
     // --- LÓGICA DE FORMULARIO (Adaptada de CrearAdmin) ---
-    const handleChangeInputValue = async (e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        const valueNumOrStr = (value === '' || value === '0') ? null : value;
+    const handleChangeInputValue = async (
+        e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
+        const target = e.target as HTMLInputElement;
+        const { name, value, /* type, */ checked } = target;
+
         const fieldName = name as keyof ValidationErrors;
 
-        // Campos que deben ser numéricos
-        const isNumericField = ['cedula', 'municipioId', 'liderCedula', 'mesaVotacion', 'departamentoId'].includes(name);
-        const finalValue = isNumericField && valueNumOrStr !== null ? Number(valueNumOrStr) : valueNumOrStr;
+        // 1️⃣ Detectar booleanos (switch / checkbox)
+        const isBooleanField = ['lider', 'jurado', 'testigo', 'revisadoVerificado'].includes(name);
+        const booleanValue = checked;
 
-        // 1. Validación en tiempo real
+        // 2️⃣ Lógica numérica existente
+        const valueNumOrStr = (value === '' || value === '0') ? null : value;
+        const isNumericField = ['cedula', 'municipioId', 'liderCedula', 'mesaVotacion', 'departamentoId'].includes(name);
+
+        const finalValue =
+            isBooleanField
+                ? booleanValue
+                : isNumericField && valueNumOrStr !== null
+                    ? Number(valueNumOrStr)
+                    : valueNumOrStr;
+
+        // 3️⃣ Validación en tiempo real
         const error = await validarRegistro(
             fieldName,
             finalValue,
-            isEditing, // <-- Pasar el estado de edición
-            currentRecord.cedula // <-- Pasar la cédula original (si estamos editando)
+            isEditing,
+            currentRecord.cedula
         );
-        setValidationErrors(prevErrors => ({
-            ...prevErrors,
+
+        setValidationErrors(prev => ({
+            ...prev,
             [name]: error,
         }));
 
-        // 2. Lógica de Departamento -> Municipio
+        // 4️⃣ Lógica Departamento → Municipio (igual que antes)
         if (name === 'departamentoId') {
             const deptoId = finalValue as number | null;
 
-            // Revalidar municipio al cambiar depto
             const municipioError = await validarRegistro('municipioId', null);
             setValidationErrors(prev => ({ ...prev, municipioId: municipioError }));
 
             if (deptoId) {
                 setSelectedDepartamentoId(deptoId);
                 setCiudadPorDepartamento(dataCiudades.filter(c => c.departmentId === deptoId));
-                setCurrentRecord(prev => ({ ...prev, departamentoId: deptoId }))
+                setCurrentRecord(prev => ({ ...prev, departamentoId: deptoId }));
             } else {
                 setSelectedDepartamentoId('');
                 setCiudadPorDepartamento([]);
             }
-            // Resetear municipio seleccionado
+
             setCurrentRecord(prev => ({ ...prev, municipioId: null }));
             return;
         }
 
-        // 3. Actualizar estado del registro
+        // 5️⃣ Actualizar estado
         setCurrentRecord(prev => {
             if (name === 'nombres' || name === 'apellidos') {
                 return { ...prev, [name]: toPascalCase(finalValue as string) };
@@ -176,6 +209,7 @@ export function AllRegistroVotacion() {
             return { ...prev, [name]: finalValue };
         });
     };
+
 
     // --- ACCIONES CRUD ---
 
@@ -235,29 +269,27 @@ export function AllRegistroVotacion() {
         setValidationErrors(finalErrors);
 
         if (hasErrors) {
-            alert('Por favor, corrige los errores en el formulario.');
+            showToastMessage('Por favor, corrige los errores en el formulario.', 'warning');
             return;
         }
 
+
         try {
             if (isEditing) {
-                // ACTUALIZAR
                 await updateRegistroVotacion(currentRecord.cedula, currentRecord);
-                alert(`Registro actualizado: ${currentRecord.nombres}`);
-                // setPagination(prev => ({ ...prev }));
+                showToastMessage(`Registro actualizado: ${currentRecord.nombres}`, 'success');
             } else {
-                // CREAR
                 const nuevo = await createRegistroVotacion(currentRecord);
-                alert(`Registro creado: ${nuevo.cedula} - ${nuevo.nombres}`);
-                // setPagination(prev => ({ ...prev }));
+                showToastMessage(`Registro creado: ${nuevo.cedula} - ${nuevo.nombres}`, 'success');
             }
+
             setShowModal(false);
             // Refrescar tabla (manteniendo página actual si es posible)
             setPagination(prev => ({ ...prev }));
             setReloadTrigger(prev => prev + 1);
         } catch (error) {
             console.error("Error al guardar", error);
-            alert("Error al guardar el registro.");
+            showToastMessage('Error al guardar el registro.', 'danger');
         }
     };
 
@@ -266,12 +298,13 @@ export function AllRegistroVotacion() {
         if (window.confirm(`¿Estás seguro de eliminar el registro con cédula ${cedula}?`)) {
             try {
                 await deleteRegistroVotacion(cedula);
-                alert("Registro eliminado correctamente.");
+                showToastMessage('Registro eliminado correctamente.', 'success');
+
                 // Refrescar tabla
                 setPagination(prev => ({ ...prev }));
             } catch (error) {
                 console.error("Error eliminando", error);
-                alert("No se pudo eliminar el registro.");
+                showToastMessage('No se pudo eliminar el registro.', 'danger');
             }
             setReloadTrigger(prev => prev + 1);
         }
@@ -300,6 +333,38 @@ export function AllRegistroVotacion() {
             id: "departamento",
             header: "Departamento",
             cell: props => getDepartamentoName(props.row.original.municipioId),
+        }),
+        columnHelper.accessor("revisadoVerificado", {
+            header: "Verificado",
+            cell: info => (
+                <span className={`fw-bold ${info.getValue() ? 'text-success' : 'text-danger'}`}>
+                    {info.getValue() ? 'SI' : 'NO'}
+                </span>
+            )
+        }),
+        columnHelper.accessor("testigo", {
+            header: "Testigo",
+            cell: info => (
+                <span className={`fw-bold ${info.getValue() ? 'text-success' : 'text-danger'}`}>
+                    {info.getValue() ? 'SI' : 'NO'}
+                </span>
+            )
+        }),
+        columnHelper.accessor("jurado", {
+            header: "Jurado",
+            cell: info => (
+                <span className={`fw-bold ${info.getValue() ? 'text-success' : 'text-danger'}`}>
+                    {info.getValue() ? 'SI' : 'NO'}
+                </span>
+            )
+        }),
+        columnHelper.accessor("lider", {
+            header: "Lider",
+            cell: info => (
+                <span className={`fw-bold ${info.getValue() ? 'text-success' : 'text-danger'}`}>
+                    {info.getValue() ? 'SI' : 'NO'}
+                </span>
+            )
         }),
         columnHelper.display({
             id: "actions",
@@ -353,11 +418,11 @@ export function AllRegistroVotacion() {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="container-fluid mt-5">
             <h2 className="mb-4">Gestión de Votantes</h2>
 
             {/* Barra superior */}
-            <Row className="mb-3 align-items-center">
+            <Row className="mb-3 align-items-center mx-4">
                 <Col md={6}>
                     <InputGroup>
                         <InputGroup.Text>🔍</InputGroup.Text>
@@ -375,7 +440,7 @@ export function AllRegistroVotacion() {
             </Row>
 
             {/* Tabla */}
-            <div className="table-responsive bg-white p-3 rounded shadow-sm">
+            <div className="table-responsive bg-white p-3 rounded shadow-sm mx-4">
                 <Table striped hover bordered>
                     <thead>
                         {table.getHeaderGroups().map(headerGroup => (
@@ -501,36 +566,40 @@ export function AllRegistroVotacion() {
                             {validationErrors.mesaVotacion && <div className="invalid-feedback">{validationErrors.mesaVotacion}</div>}
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label">Lider</label>
-                            <input
+                            <Form.Check
+                                type="switch"
+                                label="Es Líder"
+                                name="lider"
+                                checked={!!currentRecord.lider}
                                 onChange={handleChangeInputValue}
-                                value={currentRecord.mesaVotacion || ''}
-                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
-                            
+                            />
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label">Jurado</label>
-                            <input
+                            <Form.Check
+                                type="switch"
+                                label="Es Testigo"
+                                name="testigo"
+                                checked={!!currentRecord.testigo}
                                 onChange={handleChangeInputValue}
-                                value={currentRecord.mesaVotacion || ''}
-                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
-                            
+                            />
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label">Testigo</label>
-                            <input
+                            <Form.Check
+                                type="switch"
+                                label="Es Jurado"
+                                name="jurado"
+                                checked={!!currentRecord.jurado}
                                 onChange={handleChangeInputValue}
-                                value={currentRecord.mesaVotacion || ''}
-                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
-                            
+                            />
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label">Verificado</label>
-                            <input
+                            <Form.Check
+                                type="switch"
+                                label="Está Verificado"
+                                name="revisadoVerificado"
+                                checked={!!currentRecord.revisadoVerificado}
                                 onChange={handleChangeInputValue}
-                                value={currentRecord.mesaVotacion || ''}
-                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
-                            
+                            />
                         </div>
 
                         {/* Lugar Votación */}
@@ -598,13 +667,21 @@ export function AllRegistroVotacion() {
                         </div>
 
                         {/* Líder */}
-                        <div className="col-md-12">
+                        <div className="col-md-6">
                             <label className="form-label">Cédula del Líder</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 value={currentRecord.liderCedula || ''}
                                 type="number" className={`form-control ${validationErrors.liderCedula ? 'is-invalid' : ''}`} name='liderCedula' />
                             {validationErrors.liderCedula && <div className="invalid-feedback">{validationErrors.liderCedula}</div>}
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label">Nombre y Apellido del Líder</label>
+                            <input
+                                onChange={handleChangeInputValue}
+                                value={currentRecord.liderNombres || ''}
+                                type="text" className={`form-control ${''}`} name='liderNombres' />
+
                         </div>
 
                         {/* Observación */}
@@ -622,11 +699,34 @@ export function AllRegistroVotacion() {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
                     <Button variant="primary" onClick={handleSave}>{isEditing ? 'Actualizar' : 'Guardar'}</Button>
-                    <pre className={"bg-black text-white " + 'd-none'}>
+                    <pre className={"bg-black text-white " + (isDebugPayloadJSONRV ? 'd-block' : 'd-none')}>
                         {JSON.stringify(currentRecord, null, 2)}
                     </pre>
                 </Modal.Footer>
             </Modal>
+            <ToastContainer position="top-end" className="p-3" style={{ zIndex: 1060 }}>
+                <Toast
+                    bg={toastVariant}
+                    show={showToast}
+                    onClose={() => setShowToast(false)}
+                    delay={3000}
+                    autohide
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">
+                            {toastVariant === 'success' && '✅ Éxito'}
+                            {toastVariant === 'danger' && '❌ Error'}
+                            {toastVariant === 'warning' && '⚠️ Atención'}
+                            {toastVariant === 'info' && 'ℹ️ Información'}
+                        </strong>
+                    </Toast.Header>
+                    <Toast.Body className="text-white">
+                        {toastMessage}
+                    </Toast.Body>
+                </Toast>
+            </ToastContainer>
+
         </div>
+
     );
 }

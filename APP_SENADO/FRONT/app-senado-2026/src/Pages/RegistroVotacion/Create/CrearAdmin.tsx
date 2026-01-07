@@ -6,6 +6,7 @@ import axios from "axios";
 import { toPascalCase } from "../../../Functions/formatters";
 import { createRegistroVotacion } from "../../../API/apiResponse";
 import { imagenGisela_1 } from "./Crear";
+import { isDebugPayloadJSONRV } from "../../../Functions/Variables";
 
 export function CrearRegistroVotacionAdmin() {
     const [selectedDepartamentoId, setSelectedDepartamentoId] = useState<number | ''>('');
@@ -381,7 +382,7 @@ export function CrearRegistroVotacionAdmin() {
                             >
                                 Guardar Registro
                             </button>
-                            <pre className={"bg-black text-white " + 'd-none'}>
+                            <pre className={"bg-black text-white " + (isDebugPayloadJSONRV?'d-block':'d-none')}>
                                 {JSON.stringify(registroVotacion, null, 2)}
                             </pre>
                         </div>

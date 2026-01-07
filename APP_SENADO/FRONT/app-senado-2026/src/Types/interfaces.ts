@@ -50,8 +50,8 @@ export interface RegistroVotacion {
   numeroCelular: string | null;
   mesaVotacion: number | null;
   lugarVotacion: string | null;
-  municipioId: number | null;
   departamentoId: number | null;
+  municipioId: number | null;
   municipioDepartamento?: string | null;
   direccion: string | null;
   comunaBarrio: string | null;
@@ -60,6 +60,9 @@ export interface RegistroVotacion {
   fechaRegistro: Date | null;
   observacion: string | null;
   revisadoVerificado?: boolean | null;
+  testigo?: boolean | null;
+  jurado?: boolean | null;
+  lider?: boolean | null;
 }
 export const regitroVotacionNulo: RegistroVotacion = {
   cedula: 0,
@@ -76,6 +79,10 @@ export const regitroVotacionNulo: RegistroVotacion = {
   liderCedula: 0,
   fechaRegistro: hoyFecha,
   observacion: '',
+  revisadoVerificado: false,
+  testigo: false,
+  jurado: false,
+  lider: false,
 }
 
 export interface Lider {
@@ -96,6 +103,6 @@ export const liderNulo: Lider = {
   municipioId: 0,
   direccion: '',
   mesaVotacion: 0,
-  lugarVotacion: '', 
+  lugarVotacion: '',
 
 }

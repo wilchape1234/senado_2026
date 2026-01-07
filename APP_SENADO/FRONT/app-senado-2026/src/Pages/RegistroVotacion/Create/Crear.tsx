@@ -9,6 +9,7 @@ import gisselaImage from "../../../assets/Img/gissela_70_1.jpeg";
 import { initialValidationErrors, validarRegistro, type ValidationErrors } from "../../../Functions/global";
 import { toPascalCase } from "../../../Functions/formatters";
 import { createRegistroVotacion, } from "../../../API/apiResponse";
+import { isDebugPayloadJSONRV } from "../../../Functions/Variables";
 
 export const imagenGisela_1 = gisselaImage;
 
@@ -471,7 +472,7 @@ function CrearRegistroVotacion() {
                             >
                                 Guardar Registro
                             </button>
-                            <pre className={"bg-black text-white " + 'd-none'}>
+                            <pre className={"bg-black text-white " + (isDebugPayloadJSONRV?'d-block':'d-none')}>
                                 {JSON.stringify(registroVotacion, null, 2)}
                             </pre>
                         </div>
