@@ -495,7 +495,7 @@ export function AllRegistroVotacion() {
             </div>
 
             {/* MODAL CON FORMULARIO COMPLEJO (Adaptado de CrearAdmin) */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" backdrop="static">
+            <Modal show={showModal} onHide={() => setShowModal(false)} size="xl" backdrop="static">
                 <Modal.Header closeButton className="bg-primary text-white">
                     <Modal.Title>{isEditing ? 'Editar Registro' : 'Nuevo Registro de Votación'}</Modal.Title>
                 </Modal.Header>
@@ -568,7 +568,7 @@ export function AllRegistroVotacion() {
                         <div className="col-md-3">
                             <Form.Check
                                 type="switch"
-                                label="Es Líder"
+                                label={currentRecord.lider? "Es Líder":'NO es Lider'}
                                 name="lider"
                                 checked={!!currentRecord.lider}
                                 onChange={handleChangeInputValue}
@@ -577,7 +577,7 @@ export function AllRegistroVotacion() {
                         <div className="col-md-3">
                             <Form.Check
                                 type="switch"
-                                label="Es Testigo"
+                                label={currentRecord.testigo? "Es Testigo":'NO es Testigo'}
                                 name="testigo"
                                 checked={!!currentRecord.testigo}
                                 onChange={handleChangeInputValue}
@@ -586,7 +586,7 @@ export function AllRegistroVotacion() {
                         <div className="col-md-3">
                             <Form.Check
                                 type="switch"
-                                label="Es Jurado"
+                                label={currentRecord.jurado? "Es Jurado":'NO es Jurado'}
                                 name="jurado"
                                 checked={!!currentRecord.jurado}
                                 onChange={handleChangeInputValue}
@@ -595,7 +595,7 @@ export function AllRegistroVotacion() {
                         <div className="col-md-3">
                             <Form.Check
                                 type="switch"
-                                label="Está Verificado"
+                                label={currentRecord.revisadoVerificado? "Es Verificado":'NO es Verificado'}
                                 name="revisadoVerificado"
                                 checked={!!currentRecord.revisadoVerificado}
                                 onChange={handleChangeInputValue}
@@ -603,7 +603,7 @@ export function AllRegistroVotacion() {
                         </div>
 
                         {/* Lugar Votación */}
-                        <div className="col-md-9">
+                        <div className="col-md-12">
                             <label className="form-label">Lugar de votación</label>
                             <input
                                 onChange={handleChangeInputValue}
