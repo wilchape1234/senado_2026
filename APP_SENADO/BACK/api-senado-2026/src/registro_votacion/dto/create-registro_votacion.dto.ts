@@ -16,5 +16,5 @@ export class CreateRegistroVotacionDto {
     liderNombres: string | null;
     fechaRegistro: Date | null;
     observacion: string | null;
-    revisado_verificado: boolean | null;
+    revisadoVerificado: boolean | null;
 }

@@ -59,7 +59,7 @@ export interface RegistroVotacion {
   liderNombres?: string | null;
   fechaRegistro: Date | null;
   observacion: string | null;
-  revisado_verificado?: boolean | null;
+  revisadoVerificado?: boolean | null;
 }
 export const regitroVotacionNulo: RegistroVotacion = {
   cedula: 0,

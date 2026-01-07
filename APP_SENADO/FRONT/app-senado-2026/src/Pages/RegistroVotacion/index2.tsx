@@ -21,9 +21,10 @@ import {
 
 // --- IMPORTACIONES DE UTILIDADES (Asegúrate que la ruta sea correcta) ---
 // Estas vienen de tu componente CrearAdmin, ajusta la ruta si es necesario
-import { initialValidationErrors,  validarRegistro, type ValidationErrors } from "../../Functions/global";
+import { initialValidationErrors, validarRegistro, type ValidationErrors } from "../../Functions/global";
 import { toPascalCase } from "../../Functions/formatters";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { useAuth } from "../../context/AuthProvider";
 
 // Objeto vacío para inicializar formulario
 const initialRegistro: RegistroVotacion = {
@@ -34,7 +35,7 @@ const initialRegistro: RegistroVotacion = {
     numeroCelular: '',
     mesaVotacion: 0,
     lugarVotacion: '',
-    departamentoId:0,
+    departamentoId: 0,
     municipioId: 0,
     direccion: '',
     comunaBarrio: '',
@@ -44,6 +45,8 @@ const initialRegistro: RegistroVotacion = {
 };
 
 export function AllRegistroVotacion() {
+
+    const { user, logout } = useAuth(); //
     // --- ESTADOS DE DATOS ---
     const [data, setData] = useState<RegistroVotacion[]>([]);
     const [dataCiudades, setDataCiudades] = useState<Ciudad[]>([]);
@@ -158,7 +161,7 @@ export function AllRegistroVotacion() {
                 setCurrentRecord(prev => ({ ...prev, departamentoId: deptoId }))
             } else {
                 setSelectedDepartamentoId('');
-                setCiudadPorDepartamento([]); 
+                setCiudadPorDepartamento([]);
             }
             // Resetear municipio seleccionado
             setCurrentRecord(prev => ({ ...prev, municipioId: null }));
@@ -311,13 +314,15 @@ export function AllRegistroVotacion() {
                         <IconPencil></IconPencil>
                     </Button>
                     <Button
+                        className={'d-' + ((user?.rolId || 4) > 2 ? 'none' : 'block')}
+
                         variant="danger"
                         size="sm"
                         onClick={() => handleDelete(props.row.original.cedula)}
                     >
                         <IconTrash></IconTrash>
                     </Button>
-                </div>
+                </div >
             ),
         }),
     ], [dataCiudades, dataDepartamentos]);
@@ -467,7 +472,7 @@ export function AllRegistroVotacion() {
                         </div>
 
                         {/* Celular */}
-                        <div className="col-md-6">
+                        <div className="col-md-4">
                             <label className="form-label">N° Celular</label>
                             <input
                                 onChange={handleChangeInputValue}
@@ -477,7 +482,7 @@ export function AllRegistroVotacion() {
                         </div>
 
                         {/* Correo */}
-                        <div className="col-md-6">
+                        <div className="col-md-4">
                             <label className="form-label">Correo Electrónico</label>
                             <input
                                 onChange={handleChangeInputValue}
@@ -487,13 +492,45 @@ export function AllRegistroVotacion() {
                         </div>
 
                         {/* Mesa */}
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                             <label className="form-label">Mesa</label>
                             <input
                                 onChange={handleChangeInputValue}
                                 value={currentRecord.mesaVotacion || ''}
                                 type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
                             {validationErrors.mesaVotacion && <div className="invalid-feedback">{validationErrors.mesaVotacion}</div>}
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label">Lider</label>
+                            <input
+                                onChange={handleChangeInputValue}
+                                value={currentRecord.mesaVotacion || ''}
+                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
+                            
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label">Jurado</label>
+                            <input
+                                onChange={handleChangeInputValue}
+                                value={currentRecord.mesaVotacion || ''}
+                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
+                            
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label">Testigo</label>
+                            <input
+                                onChange={handleChangeInputValue}
+                                value={currentRecord.mesaVotacion || ''}
+                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
+                            
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label">Verificado</label>
+                            <input
+                                onChange={handleChangeInputValue}
+                                value={currentRecord.mesaVotacion || ''}
+                                type="number" className={`form-control ${validationErrors.mesaVotacion ? 'is-invalid' : ''}`} name='mesaVotacion' />
+                            
                         </div>
 
                         {/* Lugar Votación */}
