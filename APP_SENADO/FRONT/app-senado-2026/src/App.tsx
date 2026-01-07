@@ -34,19 +34,19 @@ function App() {
           <Route path="inicio" element={<Incio />} />{/* Todos pueden acceder hasta los que no tienen usuario */}
           {/* RolId = 1 */}
           <Route path="super-admin" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 1 (Super-Admin)  */}
-            <Route path="dashboard"/>
+            <Route path="dashboard" />
           </Route>
           {/* RolId = 2 */}
           <Route path="admin" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 2 (Admin)  */}
-            <Route path="dashboard"/>
+            <Route path="dashboard" />
           </Route>
           {/* RolId = 3 */}
           <Route path="supervisor" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 3 (Supervisor)  */}
-            <Route path="dashboard"/>
+            <Route path="dashboard" />
           </Route>
           {/* RolId = 4 */}
           <Route path="normal" element={<Default />} >{/* Solo pueden acceder los Usuarios de RolId 4 (Normal)  */}
-            <Route path="dashboard"/>
+            <Route path="dashboard" />
           </Route>
           <Route path="login" element={<LoginPage />} />{/* Todos pueden acceder hasta los que no tienen usuario */}
           <Route path="register" element={<RegisterPage />} />{/* Todos pueden acceder hasta los que no tienen usuario */}
@@ -217,7 +217,7 @@ function RenderApp() {
 
 export default App;
 
-function Default() {
+const Default = () => {
   return (
     <div className="">
       <div className="alert alert-info d-none">

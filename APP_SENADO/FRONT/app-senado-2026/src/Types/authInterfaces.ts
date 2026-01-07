@@ -22,7 +22,7 @@ export interface AuthContextType {
     user: AuthUser | null;
     token: string | null;
     isLoading: boolean;
-    login: (username: string, password: string) => Promise<any>;
+    login: (userName: string, password: string) => Promise<any>;
     logout: () => void;
 }
 
@@ -31,4 +31,28 @@ export interface AuthFormState {
     userName: string;
     email: string;
     password: string;
+}
+
+
+export const rolesAuth = [
+    { id: 1, name: 'Super-Admin' },
+    { id: 2, name: 'Admin' },
+    { id: 3, name: 'Colaborador' },
+    { id: 4, name: 'Estandar' },
+]
+
+export interface RolesAuth {
+    id: number;
+    name: string;
+}
+
+export const getRole = (id: number) => {
+
+    const val = {
+        role: rolesAuth.find(r => r.id === id),
+        roleName: rolesAuth.find(r => r.id === id)?.name
+    }
+    // console.log("getRole id param",id)
+    // console.log("getRole",val)
+    return (val)
 }

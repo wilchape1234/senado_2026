@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthProvider';
 import { Link, useNavigate } from 'react-router';
 
 const LoginPage = () => {
-    const [username, setUsername] = useState('');
+    const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { login } = useAuth(); 
@@ -18,7 +18,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            await login(username, password); 
+            await login(userName, password); 
             navigate('/', { replace: true });
         } catch (error) {
             // Manejo seguro de errores de Axios
@@ -47,12 +47,12 @@ const LoginPage = () => {
                             
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="username" className="form-label">Usuario:</label>
+                                    <label htmlFor="userName" className="form-label">Usuario:</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="username"
-                                        value={username}
+                                        id="userName"
+                                        value={userName}
                                         // Fix: tipar el evento de cambio
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                                         required

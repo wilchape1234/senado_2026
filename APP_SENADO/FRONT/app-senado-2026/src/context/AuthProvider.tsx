@@ -28,11 +28,11 @@ const API_AUTH_ENDPOINT = `http://192.168.18.18:${PORT}/api/v1/auth/login`;
 const getAuthUserFromToken = (token: string): AuthUser | null => {
     try {
         // Asegúrate de que el payload coincida con lo que generaste en NestJS
-        const payload: { sub: number, username: string, rolId: number } = jwtDecode(token);
+        const payload: { UID: number, userName: string, rolId: number } = jwtDecode(token);
 
         return {
-            userId: payload.sub,
-            userName: payload.username,
+            userId: payload.UID,
+            userName: payload.userName,
             rolId: payload.rolId,
         };
     } catch (error) {
@@ -77,9 +77,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
 
     // --- FUNCIÓN DE LOGIN ---
     // Fix: Error 7006 (username, password) -> Tipado explícito
-    const login = async (username: string, password: string): Promise<any> => {
+    const login = async (userName: string, password: string): Promise<any> => {
         const response = await axios.post(API_AUTH_ENDPOINT, {
-            username,
+            userName,
             password,
         });
 
